@@ -4,6 +4,81 @@
     "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Service\\EWorksPromotionCampaign.Service.csproj": {}
   },
   "projects": {
+    "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Repository\\EWorksPromotionCampaign.Repository.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Repository\\EWorksPromotionCampaign.Repository.csproj",
+        "projectName": "EWorksPromotionCampaign.Repository",
+        "projectPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Repository\\EWorksPromotionCampaign.Repository.csproj",
+        "packagesPath": "C:\\Users\\Oluwakemi\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Repository\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Oluwakemi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj": {
+                "projectPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.90, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Service\\EWorksPromotionCampaign.Service.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -12,6 +87,91 @@
         "projectPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Service\\EWorksPromotionCampaign.Service.csproj",
         "packagesPath": "C:\\Users\\Oluwakemi\\.nuget\\packages\\",
         "outputPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Service\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Oluwakemi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Repository\\EWorksPromotionCampaign.Repository.csproj": {
+                "projectPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Repository\\EWorksPromotionCampaign.Repository.csproj"
+              },
+              "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj": {
+                "projectPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.4, )"
+            },
+            "dbup": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj",
+        "projectName": "EWorksPromotionCampaign.Shared",
+        "projectPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\EWorksPromotionCampaign.Shared.csproj",
+        "packagesPath": "C:\\Users\\Oluwakemi\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\EWorksPromotionCampaign\\EWorksPromotionCampaign.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -43,13 +203,9 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "Swashbuckle.AspNetCore": {
+            "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.1.4, )"
-            },
-            "dbup": {
-              "target": "Package",
-              "version": "[4.5.0, )"
+              "version": "[6.11.1, )"
             }
           },
           "imports": [
@@ -63,14 +219,11 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -5,13 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Migrations\1622052144_initial.sql" />
-    <None Remove="Migrations\1622283603_user.sql" />
+    <None Remove="Migrations\1622052145_initial.sql" />
+    <None Remove="Migrations\1622283604_user.sql" />
+    <None Remove="Migrations\1623011135_admin_module.sql" />
+    <None Remove="Migrations\1623011560_admin_module_migration.sql" />
+    <None Remove="Migrations\1623524516_permission.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\1622052144_initial.sql" />
-    <EmbeddedResource Include="Migrations\1622283603_user.sql" />
+    <EmbeddedResource Include="Migrations\1622052145_initial.sql" />
+    <EmbeddedResource Include="Migrations\1622283604_user.sql" />
+    <EmbeddedResource Include="Migrations\1623011135_admin_module.sql" />
+    <EmbeddedResource Include="Migrations\1623011560_admin_module_migration.sql" />
+    <EmbeddedResource Include="Migrations\1623524516_permission.sql" />
   </ItemGroup>
 
   <ItemGroup>

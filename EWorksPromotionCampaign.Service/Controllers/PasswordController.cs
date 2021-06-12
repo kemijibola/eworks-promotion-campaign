@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace EWorksPromotionCampaign.Service.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PasswordController : ControllerBase
     {

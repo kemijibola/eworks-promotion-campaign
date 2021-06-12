@@ -8,6 +8,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
+using AdminUser = EWorksPromotionCampaign.Shared.Models.Admin.Domain.User;
 
 namespace EWorksPromotionCampaign.Repository
 {
@@ -16,6 +17,13 @@ namespace EWorksPromotionCampaign.Repository
         Task<User> GetUserByEmailOrPhone(string email, string phone);
         Task<User> GetUserByIdentifier(string identifier);
         Task<User> GetUserByEmail(string email);
+        Task<AdminUser> GetAdminUserByIdetifier(string identifier);
+        Task<int> CreateAdminUser(AdminUser user);
+        Task<AdminUser> GetAdminUserByEmailOrPhone(string email, string phone);
+        Task<AdminUser> GetAdminUserByEmail(string email);
+        Task UpdateAdminUser(AdminUser user);
+        Task<AdminUser> FindAdminById(long id);
+        Task UpdateAdminUserStatus(AdminUser user);
     }
 
     public class UserRepository : IUserRepository
@@ -119,7 +127,109 @@ namespace EWorksPromotionCampaign.Repository
                     email = updateItem.Email,
                     date_of_birth = updateItem.DateOfBirth,
                     address = updateItem.Address,
-                    is_phone_verified = updateItem.IsPhoneVerified,
+                    is_phone_verified = updateItem.IsPhoneVerified
+                },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task<AdminUser> GetAdminUserByIdetifier(string identifier)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            var user = await connection.QueryFirstOrDefaultAsync<AdminUser>(
+                @"usp_get_admin_user_by_identifier", new
+                {
+                    identifier,
+
+                }, commandType: CommandType.StoredProcedure);
+            return user;
+        }
+
+        public async Task<int> CreateAdminUser(AdminUser user)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            var userId = await connection.QueryFirstOrDefaultAsync<int>(@"usp_create_new_admin_user", new
+            {
+                first_name = user.FirstName,
+                last_name = user.LastName,
+                phone = user.Phone,
+                email = user.Email,
+                role_id = user.RoleId,
+                password_hash = user.PasswordHash,
+                password_salt = user.PasswordSalt
+            },
+                commandType: CommandType.StoredProcedure
+            );
+            return userId;
+        }
+
+        public async Task<AdminUser> GetAdminUserByEmailOrPhone(string email, string phone)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            var user = await connection.QueryFirstOrDefaultAsync<AdminUser>(
+                @"usp_get_admin_user_by_email_phone", new
+                {
+                    email,
+                    phone
+                }, commandType: CommandType.StoredProcedure);
+            return user;
+        }
+
+        public async Task<AdminUser> GetAdminUserByEmail(string email)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            var user = await connection.QueryFirstOrDefaultAsync<AdminUser>(
+                @"usp_get_admin_user_by_email", new
+                {
+                    email
+                }, commandType: CommandType.StoredProcedure);
+            return user;
+        }
+
+        public async Task UpdateAdminUser(AdminUser user)
+        {
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            await conn.ExecuteAsync(
+                @"usp_update_admin_user", new
+                {
+                    user_id = user.Id,
+                    first_name = user.FirstName,
+                    last_name = user.LastName,
+                    phone = user.Phone,
+                    email = user.Email,
+                },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task<AdminUser> FindAdminById(long id)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            var user = await connection.QueryFirstOrDefaultAsync<AdminUser>(
+                @"usp_get_admin_user_by_id", new
+                {
+                    id,
+                }, commandType: CommandType.StoredProcedure);
+            return user;
+        }
+
+        public async Task UpdateAdminUserStatus(AdminUser user)
+        {
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            await conn.ExecuteAsync(
+                @"usp_update_admin_user_status", new
+                {
+                    user_id = user.Id,
+                    status = user.Status,
+                    comment = user.StatusComment,
+                    updated_by = user.StatusUpdatedBy
                 },
                 commandType: CommandType.StoredProcedure
             );

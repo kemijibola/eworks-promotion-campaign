@@ -1,8 +1,10 @@
 using DbUp;
 using EWorksPromotionCampaign.Repository;
 using EWorksPromotionCampaign.Service.Services;
+using EWorksPromotionCampaign.Service.Services.Admin;
 using EWorksPromotionCampaign.Service.Services.External;
 using EWorksPromotionCampaign.Service.Validators;
+using EWorksPromotionCampaign.Service.Validators.Admin;
 using EWorksPromotionCampaign.Shared.Util;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +27,8 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using IPermissionService = EWorksPromotionCampaign.Service.Services.Admin.IPermissionService;
+using IRoleService = EWorksPromotionCampaign.Service.Services.Admin.IRoleService;
 
 namespace EWorksPromotionCampaign.Service
 {
@@ -67,25 +71,41 @@ namespace EWorksPromotionCampaign.Service
                 {
                     OnTokenValidated = async context =>
                     {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<Services.IUserService>();
+                        var adminService = context.HttpContext.RequestServices.GetRequiredService<Services.Admin.IUserService>();
 
                         var userEmail = context.Principal.Identity.Name;
                         var userRole = context.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-                        var user = await userService.GetUserByEmail(userEmail);
-                        if (user == null)
+                        var isAdminUser = userRole == "Admin";
+
+                        dynamic user;
+                        if (isAdminUser)
+                            user = await adminService.GetByEmail(userEmail);
+                        else
+                            user = await userService.GetUserByEmail(userEmail);
+                        if (user.Data is null)
                         {
                             context.Fail("User record not found; invalid user");
                             return;
                         }
 
-                        if (user.IsDeactivated || user.LockedOut)
+                        if (user.Data.IsDeactivated || user.Data.LockedOut || !user.Data.Status)
                         {
                             context.Fail("User is deactivated");
                             return;
                         }
 
+                        if (isAdminUser)
+                        {
+                            if (user.Data.RoleId < 1)
+                            {
+                                context.Fail("Invalid user");
+                                return;
+                            }
+                        }
+
                         var claims = new ClaimsIdentity(new List<Claim>{
-                             new Claim("User", JsonConvert.SerializeObject(user))
+                             new Claim("User", JsonConvert.SerializeObject(user.Data))
                         });
                         context.Principal.AddIdentity(claims);
                     }
@@ -120,6 +140,7 @@ namespace EWorksPromotionCampaign.Service
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -129,20 +150,38 @@ namespace EWorksPromotionCampaign.Service
             });
         }
         private void SetupDependencies(IServiceCollection services)
-        {   
+        {
             // configure DI for application services
+            #region Repositories
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUserValidator, UserValidator>();
-            services.AddSingleton<ILoginValidator, LoginValidator>();
             services.AddSingleton<IPasswordRepository, PasswordRepository>();
             services.AddSingleton<ITwoFactorRepository, TwoFactorRepository>();
-            services.AddSingleton<IPasswordService, PasswordService>();
+            services.AddSingleton<IRoleRepository, RoleRepository>();
+            services.AddSingleton<IPermissionRepository, PermissionRepository>();
+            #endregion
 
+            #region Services
+            services.AddSingleton<Services.IUserService, Services.UserService>();
+            services.AddSingleton<IPasswordService, PasswordService>();
+            services.AddSingleton<IPermissionService, PermissionService>();
+            services.AddSingleton<IRoleService, RoleService>();
+            services.AddSingleton<Services.Admin.IUserService, Services.Admin.UserService>();
+            #endregion
+
+            #region Validators
+            services.AddSingleton<IUserValidator, UserValidator>();
+            services.AddSingleton<ILoginValidator, LoginValidator>();
+            services.AddSingleton<IAdminUserValidator, AdminUserValidator>();
+            services.AddSingleton<IPermissionValidator, PermissionValidator>();
+            services.AddSingleton<IRoleValidator, RoleValidator>();
+            #endregion
+
+            #region Configurations
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<ExternalServicesConfig>, ExternalServicesConfigurationValidation>());
             services.AddHostedService<ValidateOptionsService>();
             services.Configure<ExternalServicesConfig>(ExternalServicesConfig.QuickTellerServiceApi, Configuration.GetSection("ExternalServices:QuickTellerServiceApi"));
             services.Configure<ExternalServicesConfig>(ExternalServicesConfig.PaystackServiceApi, Configuration.GetSection("ExternalServices:PaystackServiceApi"));
+            #endregion
         }
         public void RunMigrations()
         {

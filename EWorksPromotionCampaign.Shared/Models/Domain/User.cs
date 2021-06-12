@@ -28,6 +28,9 @@ namespace EWorksPromotionCampaign.Shared.Models.Domain
         public bool IsDeactivated { get; set; }
         public bool IsDisabled { get; set; }
         public bool LockedOutEnabled { get; set; }
+        public bool Status { get; set; }
+        public string StatusComment { get; set; }
+        public long StatusUpdatedBy { get; set; }
         public bool LockedOut { get; set; }
         public int AccessFailedCount { get; set; }
         public string DisabledComment { get; set; }
@@ -37,6 +40,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Domain
         public DateTime CreatedAt { get; set; }
         public DateTime LockedOutAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public DateTime StatusUpdatedAt { get; set; }
 
         public void UpdateAccessFailedCount()
         {
@@ -55,14 +59,14 @@ namespace EWorksPromotionCampaign.Shared.Models.Domain
                 }
             };
 
-            var refreshTokenRequest = new GenerateTokenRequest()
-            {
-                ClaimTypes = new Dictionary<IdentityClaimType, string>()
-                {
-                    { IdentityClaimType.name, Email },
-                    { IdentityClaimType.role, "Refresh" }
-                }
-            };
+            //var refreshTokenRequest = new GenerateTokenRequest()
+            //{
+            //    ClaimTypes = new Dictionary<IdentityClaimType, string>()
+            //    {
+            //        { IdentityClaimType.name, Email },
+            //        { IdentityClaimType.role, "Refresh" }
+            //    }
+            //};
 
             return new AuthModel
             {

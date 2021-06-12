@@ -48,7 +48,7 @@ namespace EWorksPromotionCampaign.Service.Services
             if (validationResult.IsValid && existingUser != null)
             {
                 var tokenGenerator = TwoFactorAuthentication.Type(_emailTokenType);
-                var (generatedToken, _, _) = tokenGenerator.GenerateToken();
+                var (generatedToken, _, _) = tokenGenerator.GenerateToken(6, DigitType.alphanumeric);
                 tokenGenerator.Requester = model.Email;
                 tokenGenerator.Token = generatedToken;
                 tokenGenerator.TypeOfToken = TokenType.jwt.ToString();

@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EWorksPromotionCampaign.Shared.Util.Enums;
 
 namespace EWorksPromotionCampaign.Shared.Util
 {
@@ -15,7 +16,7 @@ namespace EWorksPromotionCampaign.Shared.Util
         string TypeOfToken { get; set; }
         string RequestId { get; set; }
         DateTime CreatedAt { get; set; }
-        (string, string, string) GenerateToken();
+        (string, string, string) GenerateToken(int length, DigitType digitType = DigitType.alphanumeric);
         JwtSecurityToken ExtractTokenData(string token);
     }
     public class TwoFactorAuthenticationDto : ITwoFactorAuthentication
@@ -31,9 +32,9 @@ namespace EWorksPromotionCampaign.Shared.Util
         {
             throw new NotImplementedException();
         }
-        public (string, string, string) GenerateToken()
+        public (string, string, string) GenerateToken(int length, DigitType digitType = DigitType.alphanumeric)
         {
-            throw new NotImplementedException();
+            return ("", "", ""); 
         }
     }
 }

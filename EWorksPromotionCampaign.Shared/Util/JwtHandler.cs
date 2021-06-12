@@ -33,7 +33,7 @@ namespace EWorksPromotionCampaign.Shared.Util
                     new Claim(ClaimTypes.Name, request.ClaimTypes[IdentityClaimType.name]),
                     new Claim(ClaimTypes.Role, request.ClaimTypes[IdentityClaimType.role])
                 }),
-                Expires = isRefresh ? DateTime.UtcNow.AddDays(1) : DateTime.UtcNow.AddMinutes(20),
+                Expires = isRefresh ? DateTime.UtcNow.AddDays(1) : DateTime.UtcNow.AddDays(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };

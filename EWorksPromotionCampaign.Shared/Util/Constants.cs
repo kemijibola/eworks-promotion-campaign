@@ -9,5 +9,6 @@ namespace EWorksPromotionCampaign.Shared.Util
     public class Constants
     {
         public const string PhoneNumberRegexFormat = "^234\\d{10}";
+        public const string SuperAdminRole = "super admin";
     }
 }

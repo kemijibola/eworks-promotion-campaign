@@ -19,13 +19,13 @@ namespace EWorksPromotionCampaign.Service.Util
             _tokenType = tokenType;
         }
         public TwoFactorAuthentication() { }
-        public (string, string, string) GenerateToken()
+        public (string, string, string) GenerateToken(int length, DigitType digitType = DigitType.alphanumeric)
         {
             return _tokenType switch
             {
-                TokenType.otp => GenerateOtp(),
+                TokenType.otp => GenerateOtp(length, digitType),
                 TokenType.jwt => GenerateJwt(),
-                TokenType.hashed => GenerateHashCode(),
+                TokenType.hashed => GenerateHashCode(digitType),
                 _ => ("", "", ""),
             };
         }
@@ -36,17 +36,17 @@ namespace EWorksPromotionCampaign.Service.Util
             var token = new JwtSecurityTokenHandler().WriteToken(tokenData);
             return (token, "", "");
         }
-        private static (string, string, string) GenerateOtp()
+        private static (string, string, string) GenerateOtp(int length, DigitType digitType = DigitType.alphanumeric)
         {
             var salt = PasswordSalt.Create();
-            var otp = Helper.RandomString(6);
+            var otp = Helper.RandomString(length, digitType);
             var token = PasswordHash.Create(otp, salt);
             return (token, salt, otp);
         }
 
-        private static (string, string, string) GenerateHashCode()
+        private static (string, string, string) GenerateHashCode(DigitType digitType = DigitType.alphanumeric)
         {
-            var otp = Helper.RandomString(6);
+            var otp = Helper.RandomString(6, digitType);
             var token = HashCode(otp);
             return (token, "", otp);
         }

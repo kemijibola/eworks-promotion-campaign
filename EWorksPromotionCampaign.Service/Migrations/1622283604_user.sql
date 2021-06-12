@@ -29,7 +29,7 @@ create procedure usp_get_user_by_email_phone
 	@email varchar (50),
 	@phone varchar(50)
 as
-SELECT Top 1 * FROM tbl_users where email = @email OR  phone = @phone;
+SELECT Top 1 * FROM tbl_users(nolock) where email = @email OR  phone = @phone;
 GO
 
 IF (OBJECT_ID('usp_get_user_by_identifier') is not null)
@@ -100,7 +100,7 @@ GO
 create procedure usp_get_token_request_by_request_id @request_id varchar(50)
 as
     SELECT Top 1 *
-    FROM tbl_token_requests
+    FROM tbl_token_requests(nolock)
     where request_id = @request_id;
 GO
 
@@ -113,6 +113,6 @@ GO
 create procedure usp_get_token_request_by_token @token varchar(100)
 as
     SELECT Top 1 *
-    FROM tbl_token_requests
+    FROM tbl_token_requests(nolock)
     where token = @token;
 GO

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdminUser = EWorksPromotionCampaign.Shared.Models.Admin.Domain.User;
 
 namespace EWorksPromotionCampaign.Tests.Fakes
 {
@@ -128,6 +129,41 @@ namespace EWorksPromotionCampaign.Tests.Fakes
             return userRepository;
         }
         public Task<IReadOnlyCollection<User>> FindAllByCriteria<TItem>(TItem criterias)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AdminUser> GetAdminUserByIdetifier(string identifier)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CreateAdminUser(AdminUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AdminUser> GetAdminUserByEmailOrPhone(string email, string phone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AdminUser> GetAdminUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAdminUser(AdminUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AdminUser> FindAdminById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAdminUserStatus(AdminUser user)
         {
             throw new NotImplementedException();
         }

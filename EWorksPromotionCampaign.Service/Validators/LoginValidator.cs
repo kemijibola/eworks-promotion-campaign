@@ -19,6 +19,9 @@ namespace EWorksPromotionCampaign.Service.Validators
             _ = login ?? throw new ArgumentNullException(nameof(login), "Login is required");
 
             var result = new ValidationResult();
+            if (string.IsNullOrEmpty(login.Password))
+                result.Errors.Add(nameof(login.Password), "Password is required.");
+
             if (string.IsNullOrEmpty(login.Email) && string.IsNullOrEmpty(login.Phone))
                 result.Errors.Add($"{nameof(login.Email)}/{nameof(login.Phone)}", "Email/Phone is required.");
 

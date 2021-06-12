@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EWorksPromotionCampaign.Service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class RegisterController : ControllerBase
     {

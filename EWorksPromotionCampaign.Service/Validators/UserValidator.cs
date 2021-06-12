@@ -26,6 +26,8 @@ namespace EWorksPromotionCampaign.Service.Validators
                 result.Errors.Add(nameof(newUser.FirstName), "FirstName is required.");
             if (string.IsNullOrWhiteSpace(newUser.Password))
                 result.Errors.Add(nameof(newUser.Password), "Password is required.");
+            if (!newUser.Password.Equals(newUser.ConfirmPassword))
+                result.Errors.Add(nameof(newUser.ConfirmPassword), "Password and Confirm Password must match.");
             if (newUser.Password.Length < 8)
                 result.Errors.Add(nameof(newUser.Password), "Password length must be greater than 7.");
             if (string.IsNullOrEmpty(newUser.LastName))

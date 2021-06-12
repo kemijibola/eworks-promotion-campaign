@@ -18,7 +18,7 @@ namespace EWorksPromotionCampaign.Tests.Controllers
 
         public LoginControllerTests(CustomWebApplicationFactory<Startup> factory)
         {
-            factory.ClientOptions.BaseAddress = new Uri("http://localhost/api/");
+            factory.ClientOptions.BaseAddress = new Uri("http://localhost/api/v1/");
 
             _client = factory.CreateClient();
             _factory = factory;

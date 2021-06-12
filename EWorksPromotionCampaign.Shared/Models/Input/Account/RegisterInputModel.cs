@@ -17,7 +17,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Input
         public string Phone { get; set; }
         [EmailAddress] public string Email { get; set; }
         public string Password { get; set; }
-        [Compare("Password")] public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; }
         public string Address { get; set; }
         [Required] public DateTime DateOfBirth { get; set; }
 

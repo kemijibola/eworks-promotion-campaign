@@ -19,5 +19,10 @@ namespace EWorksPromotionCampaign.Shared.Util
             jwt,
             hashed
         }
+        public enum DigitType
+        {
+            alphanumeric,
+            numeric
+        }
     }
 }

@@ -92,9 +92,19 @@ namespace EWorksPromotionCampaign.Repository
             }
         }
 
-        public Task Update<TItem>(TItem id, Role updateItem)
+        public async Task Update<TItem>(TItem id, Role updateItem)
         {
-            throw new NotImplementedException();
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            await conn.ExecuteAsync(
+                @"usp_update_role", new
+                {
+                    role_id = id,
+                    role_name = updateItem.RoleName,
+                    role_description = updateItem.RoleDescription
+                },
+                commandType: CommandType.StoredProcedure
+            );
         }
 
         public async Task UpdateStatus(Role role)

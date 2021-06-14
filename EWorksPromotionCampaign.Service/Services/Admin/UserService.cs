@@ -119,7 +119,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             var validationResult = _adminUserValidator.ValidateUserDisabledStatus(model);
             if (validationResult.IsValid)
             {
-                var user = await _userRepository.FindById(model.Id);
+                var user = await _userRepository.FindAdminById(model.Id);
                 _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "User not found", 404);
                 if (!user.IsDisabled.Equals(model.Disabled))
                 {
@@ -135,7 +135,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             var validationResult = _adminUserValidator.ValidateUpdateUserStatus(model);
             if (validationResult.IsValid)
             {
-                var user = await _userRepository.FindById(model.Id);
+                var user = await _userRepository.FindAdminById(model.Id);
                 _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "User not found", 404);
                 if (!user.Status.Equals(model.Status))
                 {

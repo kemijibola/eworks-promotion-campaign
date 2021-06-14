@@ -23,6 +23,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
         Task<Result<string>> ResetRolePermissions(int roleId, int[] permissions);
         Task<Result<string>> UpdateRoleStatus(UpdateRoleStatusInputModel model);
         Task<Result<FetchRolesOutputModel>> GetRoles();
+        Task<Result<string>> UpdateRole(UpdateRoleInputModel model);
     }
     public class RoleService : IRoleService
     {
@@ -84,6 +85,26 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 if (invalidPermissions.Count > 0) throw new ServiceException(ResponseCodes.InvalidRequest, $"'{string.Join(",", invalidPermissions.Keys)}' not found or has not been approved", 404);
                 await _roleRepository.ResetRolePermissions(roleId, permissions);
                 return new Result<string>(validationResult, "Role permission(s) updated successfully");
+            }
+            return new Result<string>(validationResult, null);
+        }
+
+        public async Task<Result<string>> UpdateRole(UpdateRoleInputModel model)
+        {
+            var validationResult = _roleValidator.ValidateUpdateRole(model);
+            if(validationResult.IsValid)
+            {
+                var role = await _roleRepository.FindById(model.Id);
+                _ = role ?? throw new ServiceException(ResponseCodes.NotFound, "Role not found", 404);
+                if (!model.RoleName.Equals(role.RoleName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var existingRole = await _roleRepository.FindByRoleName(model.RoleName);
+                    if (existingRole is not null)
+                        throw new ServiceException(ResponseCodes.Conflict, "Role exist", 409);
+                    var newRole = model.ToRole();
+                    await _roleRepository.Update(role.Id, newRole);
+                }
+                return new Result<string>(validationResult, "Role updated.");
             }
             return new Result<string>(validationResult, null);
         }

@@ -11,7 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IAdminUserService = EWorksPromotionCampaign.Service.Services.Admin.IUserService;
-
+using AdminUser = EWorksPromotionCampaign.Shared.Models.Admin.Domain.User;
+using Newtonsoft.Json;
 
 namespace EWorksPromotionCampaign.Service.Controllers.Admin
 {
@@ -66,6 +67,7 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
         {
             try
             {
+                requestModel.UserId = GetAuthUser().Id;
                 var result = await _adminUserService.UpdateUserStatus(requestModel);
                 if (result.IsSuccess)
                     return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
@@ -88,18 +90,18 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PutUser([FromBody] UpdateUserStatusInputModel requestModel)
+        public async Task<IActionResult> PutUser([FromBody] UpdateAdminUserInputModel requestModel)
         {
             try
             {
-                var result = await _adminUserService.UpdateUserStatus(requestModel);
+                var result = await _adminUserService.UpdateAdmin(requestModel);
                 if (result.IsSuccess)
                     return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
                 return BadRequest(new { responseCode = ResponseCodes.InvalidRequest, responseDescription = result.Description });
             }
             catch (ServiceException sEx)
             {
-                _logger.LogError($"Unable to update user status: {sEx.Message} {sEx.StackTrace}");
+                _logger.LogError($"Unable to update user profile: {sEx.Message} {sEx.StackTrace}");
                 return StatusCode(sEx.StatusCode, new ServiceResponse(sEx.ResponseCode, sEx.Message));
             }
             catch (Exception ex)
@@ -118,6 +120,7 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
         {
             try
             {
+                requestModel.UserId = GetAuthUser().Id;
                 var result = await _adminUserService.UpdateUserDisabledStatus(requestModel);
                 if (result.IsSuccess)
                     return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
@@ -133,6 +136,10 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
+        }
+        private AdminUser GetAuthUser()
+        {
+            return JsonConvert.DeserializeObject<AdminUser>(User.Claims.FirstOrDefault(c => c.Type == "User")?.Value);
         }
     }
 }

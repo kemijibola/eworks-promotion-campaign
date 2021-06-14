@@ -17,8 +17,9 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
     {
         Task<Result<FetchPermissionOutputModel>> GetPermissionById(int permissionId);
         Task<bool> PermissionExist(int permissionId);
-        Task<Result<string>> UpdateRoleStatus(UpdatePermissionStatusInputModel model);
+        Task<Result<string>> UpdatePermissionStatus(UpdatePermissionStatusInputModel model);
         Task<Result<FetchPermissionsOutputModel>> GetPermissions();
+        // Task<AddResult<CreatePermissionOutputModel>> CreatePermission(CreatePermissionInputModel model);
     }
     public class PermissionService : IPermissionService
     {
@@ -29,6 +30,20 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             _permissionRepository = permissionRepository;
             _permissionValidator = permissionValidator;
         }
+
+        //public async Task<AddResult<CreatePermissionOutputModel>> CreatePermission(CreatePermissionInputModel model)
+        //{
+        //    var validationResult = _permissionValidator.ValidateNewPermission(model);
+        //    var existingPermission = await _permissionRepository.FindByPermissionName(model.PermissionName);
+        //    if (validationResult.IsValid && existingPermission is null)
+        //    {
+        //        var permission = model.ToPermission();
+        //        permission.Id = await _permissionRepository.Create(permission);
+        //        return new AddResult<CreatePermissionOutputModel>(validationResult, false, CreatePermissionOutputModel.FromPermission(permission));
+        //    }
+        //    return new AddResult<CreatePermissionOutputModel>(validationResult, validationResult.IsValid, null);
+        //}
+
         public async Task<Result<FetchPermissionOutputModel>> GetPermissionById(int permissionId)
         {
             var permission = await _permissionRepository.FindById(permissionId);
@@ -50,7 +65,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             return true;       
         }
 
-        public async Task<Result<string>> UpdateRoleStatus(UpdatePermissionStatusInputModel model)
+        public async Task<Result<string>> UpdatePermissionStatus(UpdatePermissionStatusInputModel model)
         {
             var validationResult = _permissionValidator.ValidateUpdatePermissionStatus(model);
             if (validationResult.IsValid)

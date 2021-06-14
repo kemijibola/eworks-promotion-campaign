@@ -15,6 +15,7 @@ namespace EWorksPromotionCampaign.Repository
     {
         Task<IReadOnlyCollection<Permission>> FetchByRoleId(long roleId);
         Task UpdateStatus(Permission permission);
+        Task<Permission> FindByPermissionName(string name);
     }
     public class PermissionRepository : IPermissionRepository
     {
@@ -23,9 +24,20 @@ namespace EWorksPromotionCampaign.Repository
         {
             _defaultConnectionString = configuration.GetConnectionString("DefaultConnectionString");
         }
-        public Task<long> Create(Permission newItem)
+        public async Task<long> Create(Permission newItem)
         {
-            throw new NotImplementedException();
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            var permissionId = await conn.QueryFirstOrDefaultAsync<int>(
+                @"usp_create_new_admin_permission",
+                new
+                {
+                    permission_name = newItem.PermissionName,
+                    permission_description = newItem.PermissionDescription
+                },
+                commandType: CommandType.StoredProcedure);
+
+            return permissionId;
         }
 
         public Task Delete<TItem>(TItem id)
@@ -91,6 +103,18 @@ namespace EWorksPromotionCampaign.Repository
                 },
                 commandType: CommandType.StoredProcedure
             );
+        }
+        public async Task<Permission> FindByPermissionName(string name)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            return await connection.QueryFirstOrDefaultAsync<Permission>(
+                @"usp_fetch_permission_by_permission_name",
+                new
+                {
+                    permission_name = name
+                },
+                commandType: CommandType.StoredProcedure);
         }
     }
 }

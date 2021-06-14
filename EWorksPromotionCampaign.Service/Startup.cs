@@ -89,7 +89,7 @@ namespace EWorksPromotionCampaign.Service
                             return;
                         }
 
-                        if (user.Data.IsDeactivated || user.Data.LockedOut || !user.Data.Status)
+                        if (user.Data.IsDisabled || user.Data.LockedOut || !user.Data.Status)
                         {
                             context.Fail("User is deactivated");
                             return;

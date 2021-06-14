@@ -18,7 +18,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Admin.Output
             Email = user.Email;
             RoleId = user.RoleId;
             Status = user.Status;
-            IsDeactivated = user.IsDeactivated;
+            IsDisabled = user.IsDisabled;
             LockedOut = user.LockedOut;
         }
         public long Id { get; set; }
@@ -27,7 +27,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Admin.Output
         public string Phone { get; set; }
         public string Email { get; set; }
         public int RoleId { get; set; }
-        public bool IsDeactivated { get; set; }
+        public bool IsDisabled { get; set; }
         public bool Status { get; set; }
         public bool LockedOut { get; set; }
         public static FetchUserByEmailOutputModel FromUser(AdminUser user)

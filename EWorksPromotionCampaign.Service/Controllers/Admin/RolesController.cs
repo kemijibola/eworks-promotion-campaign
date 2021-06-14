@@ -160,7 +160,6 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
         }
-
         private AdminUser GetAuthUser()
         {
             return JsonConvert.DeserializeObject<AdminUser>(User.Claims.FirstOrDefault(c => c.Type == "User")?.Value);

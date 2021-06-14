@@ -23,6 +23,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
         Task<Result<UpdateAdminUserOutputModel>> UpdateAdmin(UpdateAdminUserInputModel model);
         Task<Result<FetchUserByEmailOutputModel>> GetByEmail(string email);
         Task<Result<string>> UpdateUserStatus(UpdateUserStatusInputModel model);
+        Task<Result<string>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model);
     }
     public class UserService : IUserService
     {
@@ -46,7 +47,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 var identifier = string.IsNullOrEmpty(model.Email) ? model.Phone : model.Email;
                 var user = await _userRepository.GetAdminUserByIdetifier(identifier);
                 _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "User not found", 404);
-                if (user.LockedOut || !user.Status || user.RoleId == 0 || user.IsDeactivated)
+                if (user.LockedOut || !user.Status || user.RoleId == 0 || user.IsDisabled)
                     return null;
                 var isValidated = PasswordHash.Validate(model.Password, user.PasswordSalt, user.PasswordHash);
                 if (!isValidated)
@@ -111,6 +112,22 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 return new Result<UpdateAdminUserOutputModel>(validationResult, UpdateAdminUserOutputModel.FromUser(updatedUser));
             }
             return new Result<UpdateAdminUserOutputModel>(validationResult, null);
+        }
+
+        public async Task<Result<string>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model)
+        {
+            var validationResult = _adminUserValidator.ValidateUserDisabledStatus(model);
+            if (validationResult.IsValid)
+            {
+                var user = await _userRepository.FindById(model.Id);
+                _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "User not found", 404);
+                if (!user.IsDisabled.Equals(model.Disabled))
+                {
+                    var userModel = model.ToUser();
+                    await _userRepository.UpdateAdminUserDisabledStatus(userModel);
+                }
+            }
+            return new Result<string>(validationResult, "User Disabled status has been updated.");
         }
 
         public async Task<Result<string>> UpdateUserStatus(UpdateUserStatusInputModel model)

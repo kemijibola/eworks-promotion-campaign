@@ -10,6 +10,7 @@
     <None Remove="Migrations\1623011135_admin_module.sql" />
     <None Remove="Migrations\1623011560_admin_module_migration.sql" />
     <None Remove="Migrations\1623524516_permission.sql" />
+    <None Remove="Migrations\1623583300_add_columns_to_user.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
     <EmbeddedResource Include="Migrations\1623011135_admin_module.sql" />
     <EmbeddedResource Include="Migrations\1623011560_admin_module_migration.sql" />
     <EmbeddedResource Include="Migrations\1623524516_permission.sql" />
+    <EmbeddedResource Include="Migrations\1623583300_add_columns_to_user.sql" />
   </ItemGroup>
 
   <ItemGroup>

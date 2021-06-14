@@ -108,5 +108,31 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
         }
+
+        [HasPermission(Permission.CanToggleAdminUserDisabledStatus)]
+        [HttpPut("disable/toggle")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PutToggleDisabledStatus([FromBody] UpdateDisabledStatusInputModel requestModel)
+        {
+            try
+            {
+                var result = await _adminUserService.UpdateUserDisabledStatus(requestModel);
+                if (result.IsSuccess)
+                    return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
+                return BadRequest(new { responseCode = ResponseCodes.InvalidRequest, responseDescription = result.Description });
+            }
+            catch (ServiceException sEx)
+            {
+                _logger.LogError($"Unable to update user disabled status: {sEx.Message} {sEx.StackTrace}");
+                return StatusCode(sEx.StatusCode, new ServiceResponse(sEx.ResponseCode, sEx.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
+            }
+        }
     }
 }

@@ -167,5 +167,10 @@ namespace EWorksPromotionCampaign.Tests.Fakes
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateAdminUserDisabledStatus(AdminUser user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace EWorksPromotionCampaign.Service.Validators.Admin
         ValidationResult ValidateUpdateAdmin(UpdateAdminUserInputModel model);
         ValidationResult ValidateFetchAdminByEmail(string email);
         ValidationResult ValidateUpdateUserStatus(UpdateUserStatusInputModel model);
+        ValidationResult ValidateUserDisabledStatus(UpdateDisabledStatusInputModel model);
     }
     public class AdminUserValidator : IAdminUserValidator
     {
@@ -82,6 +83,17 @@ namespace EWorksPromotionCampaign.Service.Validators.Admin
         }
 
         public ValidationResult ValidateUpdateUserStatus(UpdateUserStatusInputModel model)
+        {
+            _ = model ?? throw new ArgumentNullException(nameof(model), "User is required");
+            var result = new ValidationResult();
+            if (model.Id < 1)
+                result.Errors.Add(nameof(model.Id), "Id is required.");
+            if (string.IsNullOrEmpty(model.Comment))
+                result.Errors.Add(nameof(model.Comment), "Comment is required.");
+            return result;
+        }
+
+        public ValidationResult ValidateUserDisabledStatus(UpdateDisabledStatusInputModel model)
         {
             _ = model ?? throw new ArgumentNullException(nameof(model), "User is required");
             var result = new ValidationResult();

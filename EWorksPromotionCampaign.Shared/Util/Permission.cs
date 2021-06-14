@@ -37,6 +37,8 @@ namespace EWorksPromotionCampaign.Shared.Util
         public const string CanBlacklistUser = "CanBlacklistUser";
         public const string CanBlacklistUsers = "CanBlacklistUsers";
         public const string CanEditAdminUser = "CanEditAdminUser";
+        public const string CanToggleAdminUserDisabledStatus = "CanToggleAdminUserDisabledStatus";
+        // public const string CanCreatePermission = "CanCreatePermission";
         #endregion
     }
 }

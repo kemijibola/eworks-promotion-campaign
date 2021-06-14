@@ -24,6 +24,7 @@ namespace EWorksPromotionCampaign.Repository
         Task UpdateAdminUser(AdminUser user);
         Task<AdminUser> FindAdminById(long id);
         Task UpdateAdminUserStatus(AdminUser user);
+        Task UpdateAdminUserDisabledStatus(AdminUser user);
     }
 
     public class UserRepository : IUserRepository
@@ -230,6 +231,22 @@ namespace EWorksPromotionCampaign.Repository
                     status = user.Status,
                     comment = user.StatusComment,
                     updated_by = user.StatusUpdatedBy
+                },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task UpdateAdminUserDisabledStatus(AdminUser user)
+        {
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            await conn.ExecuteAsync(
+                @"usp_update_user_disabled_status", new
+                {
+                    user_id = user.Id,
+                    status = user.IsDisabled,
+                    comment = user.DisabledComment,
+                    disabled_by = user.DisabledBy
                 },
                 commandType: CommandType.StoredProcedure
             );

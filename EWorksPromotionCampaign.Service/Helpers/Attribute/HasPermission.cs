@@ -53,7 +53,7 @@ namespace EWorksPromotionCampaign.Service.Helpers.Attribute
                         return;
                     }
 
-                    if (!user.Data.Status || user.Data.IsDeactivated)
+                    if (!user.Data.Status || user.Data.IsDisabled)
                     {
                         _logger.LogInformation($"user {userName} is deactivated");
                         context.Result = new CustomResponseResult(ResponseCodes.Forbidden,

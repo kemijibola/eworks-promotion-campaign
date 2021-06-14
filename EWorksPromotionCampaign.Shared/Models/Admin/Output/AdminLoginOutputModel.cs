@@ -20,7 +20,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Admin.Output
             RoleId = user.RoleId;
             Status = user.Status;
             IsAdmin = user.IsAdmin;
-            IsDeactivated = user.IsDeactivated;
+            IsDisabled = user.IsDisabled;
             Token = token;
             Role = userRole;
         }
@@ -32,7 +32,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Admin.Output
         public int RoleId { get; set; }
         public bool Status { get; set; }
         public bool IsAdmin { get; set; }
-        public bool IsDeactivated { get; set; }
+        public bool IsDisabled { get; set; }
         public string Token { get; set; }
         public Role Role { get; set; }
         public static AdminLoginOutputModel FromUser(AdminUser user, Role userRole, string token)

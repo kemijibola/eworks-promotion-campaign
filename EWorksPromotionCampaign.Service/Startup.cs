@@ -158,6 +158,7 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<ITwoFactorRepository, TwoFactorRepository>();
             services.AddSingleton<IRoleRepository, RoleRepository>();
             services.AddSingleton<IPermissionRepository, PermissionRepository>();
+            services.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
             #endregion
 
             #region Services
@@ -166,6 +167,7 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IPermissionService, PermissionService>();
             services.AddSingleton<IRoleService, RoleService>();
             services.AddSingleton<Services.Admin.IUserService, Services.Admin.UserService>();
+            services.AddSingleton<IConfigurationService, ConfigurationService>();
             #endregion
 
             #region Validators
@@ -174,6 +176,7 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IAdminUserValidator, AdminUserValidator>();
             services.AddSingleton<IPermissionValidator, PermissionValidator>();
             services.AddSingleton<IRoleValidator, RoleValidator>();
+            services.AddSingleton<IConfigurationValidator, ConfigurationValidator>();
             #endregion
 
             #region Configurations

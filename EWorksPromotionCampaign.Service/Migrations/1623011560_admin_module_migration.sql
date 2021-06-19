@@ -28,6 +28,9 @@ INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_descr
 INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_description]) VALUES ( N'CanDeActivateUser', N'Ability to deactivate user');
 INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_description]) VALUES ( N'CanBlacklistUser', N'Ability to blacklist user');
 INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_description]) VALUES ( N'CanBlacklistUsers', N'Ability to upload blacklist file');
+INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_description]) VALUES ( N'CanUpdateSystemConfiguration', N'Ability to update configuration');
+INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_description]) VALUES ( N'CanDeleteSystemConfiguration', N'Ability to delete configuration');
+INSERT INTO [dbo].[tbl_admin_permissions] ( [permission_name], [permission_description]) VALUES ( N'CanViewSystemConfigurations', N'Ability to view configurations');
 
 
 DECLARE @adminId INT

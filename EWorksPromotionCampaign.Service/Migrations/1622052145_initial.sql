@@ -150,17 +150,6 @@ IF OBJECT_ID('tbl_vendor_airtime_requests', 'U') IS NULL
     end
 go
 
-IF OBJECT_ID('tbl_configurations', 'U') IS NULL
-    begin
-        create TABLE [dbo].[tbl_promo_configurations]
-        (
-            [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [key]                  int                NOT NULL,
-            [value]                nvarchar(1024)      NOT NULL,
-        ) ON [PRIMARY]
-    end
-go
-
 IF OBJECT_ID('tbl_subscribers', 'U') IS NULL
     begin
         create TABLE [dbo].[tbl_subscribers]

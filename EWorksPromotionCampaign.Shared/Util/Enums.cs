@@ -24,5 +24,28 @@ namespace EWorksPromotionCampaign.Shared.Util
             alphanumeric,
             numeric
         }
+        public enum ConfigurationType
+        {
+            DailySubscriptionlimit,
+            RetryWaitSeconds,
+            NonExistentDailyLimitsMessage,
+            MaximumDailyLimitReachedMessage,
+            NoActiveCampaignMessage,
+            BlacklistedSubscriberMessage,
+            InvalidRewardCodeMessage,
+            UsedRewardCodeMessage,
+            RaffleDrawSubscriptionMessage,
+            IncompleteParametersMessage,
+            FailedRequestMessage,
+            WeeklyDrawDay,
+            EmailSenderName,
+            EmailPortalName,
+            DefaultSMSMessage,
+            MaximumDailyAirtimeLimit,
+            MaximumDailyCashLimit,
+            MaximumDailyAirtimeLimitReachedMessage,
+            MaximumDailyCashLimitReachedMessage,
+            CashWiningMessage
+        }
     }
 }

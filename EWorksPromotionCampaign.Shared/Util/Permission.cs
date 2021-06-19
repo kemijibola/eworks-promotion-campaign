@@ -26,6 +26,9 @@ namespace EWorksPromotionCampaign.Shared.Util
         public const string CanCreateCampaign = "CanCreateCampaign";
         public const string CanConfigureCampaign = "CanConfigureCampaign";
         public const string CanCreateSystemConfiguration = "CanCreateSystemConfiguration";
+        public const string CanUpdateSystemConfiguration = "CanUpdateSystemConfiguration";
+        public const string CanDeleteSystemConfiguration = "CanDeleteSystemConfiguration";
+        public const string CanViewSystemConfigurations = "CanViewSystemConfigurations";
         public const string CanEditCampaign = "CanEditCampaign";
         public const string CanStartCampaign = "CanStartCampaign";
         public const string CanPauseCampaign = "CanPauseCampaign";

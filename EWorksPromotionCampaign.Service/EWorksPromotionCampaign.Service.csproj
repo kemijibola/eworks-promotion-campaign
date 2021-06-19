@@ -12,6 +12,7 @@
     <None Remove="Migrations\1623524516_permission.sql" />
     <None Remove="Migrations\1623583300_add_columns_to_user.sql" />
     <None Remove="Migrations\1623707513_update_role.sql" />
+    <None Remove="Migrations\1623956745_configuration.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,7 @@
     <EmbeddedResource Include="Migrations\1623524516_permission.sql" />
     <EmbeddedResource Include="Migrations\1623583300_add_columns_to_user.sql" />
     <EmbeddedResource Include="Migrations\1623707513_update_role.sql" />
+    <EmbeddedResource Include="Migrations\1623956745_configuration.sql" />
   </ItemGroup>
 
   <ItemGroup>

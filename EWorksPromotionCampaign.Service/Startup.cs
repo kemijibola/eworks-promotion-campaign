@@ -44,7 +44,7 @@ namespace EWorksPromotionCampaign.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen(c =>
@@ -159,6 +159,8 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IRoleRepository, RoleRepository>();
             services.AddSingleton<IPermissionRepository, PermissionRepository>();
             services.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
+            services.AddSingleton<ICampaignRepository, CampaignRepository>();
+            services.AddSingleton<ICampaignRewardRepository, CampaignRewardRepository>();
             #endregion
 
             #region Services
@@ -168,6 +170,8 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IRoleService, RoleService>();
             services.AddSingleton<Services.Admin.IUserService, Services.Admin.UserService>();
             services.AddSingleton<IConfigurationService, ConfigurationService>();
+            services.AddSingleton<ICampaignRewardService, CampaignRewardService>();
+            services.AddSingleton<ICampaignService, CampaignService>();
             #endregion
 
             #region Validators
@@ -177,6 +181,8 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IPermissionValidator, PermissionValidator>();
             services.AddSingleton<IRoleValidator, RoleValidator>();
             services.AddSingleton<IConfigurationValidator, ConfigurationValidator>();
+            services.AddSingleton<ICampaignRewardValidator, CampaignRewardValidator>();
+            services.AddSingleton<ICampaignValidator, CampaignValidator>();
             #endregion
 
             #region Configurations

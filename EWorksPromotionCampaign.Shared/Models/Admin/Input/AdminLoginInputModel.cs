@@ -11,6 +11,6 @@ namespace EWorksPromotionCampaign.Shared.Models.Admin.Input
     {
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Password { get; set; }
+        [Required] public string Password { get; set; }
     }
 }

@@ -47,5 +47,44 @@ namespace EWorksPromotionCampaign.Shared.Util
             MaximumDailyCashLimitReachedMessage,
             CashWiningMessage
         }
+        public enum CampaignStatus
+        {
+            inactive,
+            ongoing,
+            expired
+        }
+        public enum StartMode
+        {
+            Manual,
+            Automatic
+        }
+        public enum CampaignType
+        {
+            Raffle,
+            Instant
+        }
+        public enum WinningType
+        {
+            Airtime,
+            Cash
+        }
+        public enum ScheduleType
+        {
+            Hourly,
+            Daily,
+            Weekly,
+            Monthly
+        }
+        public enum WinningStatus
+        {
+            Inactive = 0,
+            Active
+        }
+        public enum ScheduleWinningRule
+        {
+            FirstComeFirstWin = 0,
+            AnyRandomUserWins,
+            EveryNthSubscriber
+        }
     }
 }

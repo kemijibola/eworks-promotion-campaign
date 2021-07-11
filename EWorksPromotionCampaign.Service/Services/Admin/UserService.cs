@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static EWorksPromotionCampaign.Shared.Util.Enums;
+using EWorksPromotionCampaign.Shared.Models;
 
 namespace EWorksPromotionCampaign.Service.Services.Admin
 {
@@ -22,8 +23,8 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
         Task<AddResult<CreateAdminUserOutputModel>> CreateAdmin(CreateAdminUserInputModel model);
         Task<Result<UpdateAdminUserOutputModel>> UpdateAdmin(UpdateAdminUserInputModel model);
         Task<Result<FetchUserByEmailOutputModel>> GetByEmail(string email);
-        Task<Result<string>> UpdateUserStatus(UpdateUserStatusInputModel model);
-        Task<Result<string>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model);
+        Task<Result<MessageOutputModel>> UpdateUserStatus(UpdateUserStatusInputModel model);
+        Task<Result<MessageOutputModel>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model);
     }
     public class UserService : IUserService
     {
@@ -114,7 +115,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             return new Result<UpdateAdminUserOutputModel>(validationResult, null);
         }
 
-        public async Task<Result<string>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model)
+        public async Task<Result<MessageOutputModel>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model)
         {
             var validationResult = _adminUserValidator.ValidateUserDisabledStatus(model);
             if (validationResult.IsValid)
@@ -127,10 +128,10 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                     await _userRepository.UpdateAdminUserDisabledStatus(userModel);
                 }
             }
-            return new Result<string>(validationResult, "User Disabled status has been updated.");
+            return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("User Disabled status has been updated."));
         }
 
-        public async Task<Result<string>> UpdateUserStatus(UpdateUserStatusInputModel model)
+        public async Task<Result<MessageOutputModel>> UpdateUserStatus(UpdateUserStatusInputModel model)
         {
             var validationResult = _adminUserValidator.ValidateUpdateUserStatus(model);
             if (validationResult.IsValid)
@@ -143,7 +144,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                     await _userRepository.UpdateAdminUserStatus(userModel);
                 }
             }
-            return new Result<string>(validationResult, "User status has been updated.");
+            return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("User status has been updated."));
         }
     }
 }

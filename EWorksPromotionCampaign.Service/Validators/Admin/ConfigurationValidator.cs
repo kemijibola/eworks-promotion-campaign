@@ -28,8 +28,6 @@ namespace EWorksPromotionCampaign.Service.Validators.Admin
         {
             _ = model ?? throw new ArgumentNullException(nameof(model), "Configuration is required");
             var result = new ValidationResult();
-            if (string.IsNullOrEmpty(model.ConfigurationKey))
-                result.Errors.Add(nameof(model.ConfigurationKey), "ConfigurationKey is required.");
             if (!Enum.TryParse(model.ConfigurationKey, true, out ConfigurationType configurationType))
                 result.Errors.Add(nameof(model.ConfigurationKey), "ConfigurationKey is invalid.");
             var constants = Constants.Initialize();
@@ -44,8 +42,6 @@ namespace EWorksPromotionCampaign.Service.Validators.Admin
             {
                 result.Errors.Add(nameof(model.ConfigurationValue), $"ConfigurationValue type is {configurationDetails.Type}.");
             }
-            if (string.IsNullOrEmpty(model.ConfigurationValue))
-                result.Errors.Add(nameof(model.ConfigurationValue), "ConfigurationValue is required.");
             return result;
         }
 

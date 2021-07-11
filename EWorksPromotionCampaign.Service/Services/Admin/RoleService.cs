@@ -4,6 +4,7 @@ using EWorksPromotionCampaign.Service.Util;
 using EWorksPromotionCampaign.Service.Validators;
 using EWorksPromotionCampaign.Service.Validators.Admin;
 using EWorksPromotionCampaign.Shared.Exceptions;
+using EWorksPromotionCampaign.Shared.Models;
 using EWorksPromotionCampaign.Shared.Models.Admin.Input;
 using EWorksPromotionCampaign.Shared.Models.Admin.Output;
 using EWorksPromotionCampaign.Shared.Util;
@@ -20,10 +21,10 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
         Task<Result<FetchRolePermissionOutputModel>> GetRolePermissionsById(int roleId);
         Task<Result<FetchRoleOutputModel>> GetRoleById(int roleId);
         Task<AddResult<CreateRoleOutputModel>> CreateRole(CreateRoleInputModel model);
-        Task<Result<string>> ResetRolePermissions(int roleId, int[] permissions);
-        Task<Result<string>> UpdateRoleStatus(UpdateRoleStatusInputModel model);
+        Task<Result<MessageOutputModel>> ResetRolePermissions(int roleId, int[] permissions);
+        Task<Result<MessageOutputModel>> UpdateRoleStatus(UpdateRoleStatusInputModel model);
         Task<Result<FetchRolesOutputModel>> GetRoles();
-        Task<Result<string>> UpdateRole(UpdateRoleInputModel model);
+        Task<Result<MessageOutputModel>> UpdateRole(UpdateRoleInputModel model);
     }
     public class RoleService : IRoleService
     {
@@ -72,7 +73,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             return new Result<FetchRolesOutputModel>(new ValidationResult(), FetchRolesOutputModel.FromRoles(roles));
         }
 
-        public async Task<Result<string>> ResetRolePermissions(int roleId, int[] permissions)
+        public async Task<Result<MessageOutputModel>> ResetRolePermissions(int roleId, int[] permissions)
         {
             var validationResult = _roleValidator.ValidateResetRolePermission(roleId, permissions);
             if (validationResult.IsValid)
@@ -84,12 +85,12 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 var invalidPermissions = await PermissionsNotExist(permissions);
                 if (invalidPermissions.Count > 0) throw new ServiceException(ResponseCodes.InvalidRequest, $"'{string.Join(",", invalidPermissions.Keys)}' not found or has not been approved", 404);
                 await _roleRepository.ResetRolePermissions(roleId, permissions);
-                return new Result<string>(validationResult, "Role permission(s) updated successfully");
+                return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("Role permission(s) updated successfully"));
             }
-            return new Result<string>(validationResult, null);
+            return new Result<MessageOutputModel>(validationResult, null);
         }
 
-        public async Task<Result<string>> UpdateRole(UpdateRoleInputModel model)
+        public async Task<Result<MessageOutputModel>> UpdateRole(UpdateRoleInputModel model)
         {
             var validationResult = _roleValidator.ValidateUpdateRole(model);
             if(validationResult.IsValid)
@@ -104,12 +105,12 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                     var newRole = model.ToRole();
                     await _roleRepository.Update(role.Id, newRole);
                 }
-                return new Result<string>(validationResult, "Role updated.");
+                return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("Role updated."));
             }
-            return new Result<string>(validationResult, null);
+            return new Result<MessageOutputModel>(validationResult, null);
         }
 
-        public async Task<Result<string>> UpdateRoleStatus(UpdateRoleStatusInputModel model)
+        public async Task<Result<MessageOutputModel>> UpdateRoleStatus(UpdateRoleStatusInputModel model)
         {
             var validationResult = _roleValidator.ValidateUpdateRoleStatus(model);
             if (validationResult.IsValid)
@@ -122,7 +123,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                     await _roleRepository.UpdateStatus(roleModel);
                 }
             }
-            return new Result<string>(validationResult, "Role status has been updated.");
+            return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("Role status has been updated."));
         }
 
         private async Task<Dictionary<int, bool>> PermissionsNotExist(int[] permissions)

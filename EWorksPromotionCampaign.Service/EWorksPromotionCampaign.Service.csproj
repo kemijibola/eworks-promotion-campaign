@@ -13,6 +13,9 @@
     <None Remove="Migrations\1623583300_add_columns_to_user.sql" />
     <None Remove="Migrations\1623707513_update_role.sql" />
     <None Remove="Migrations\1623956745_configuration.sql" />
+    <None Remove="Migrations\1625977885_permission_migration.sql" />
+    <None Remove="Migrations\1625978546_campaign.sql" />
+    <None Remove="Migrations\1625983022_campaign_reward.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +27,9 @@
     <EmbeddedResource Include="Migrations\1623583300_add_columns_to_user.sql" />
     <EmbeddedResource Include="Migrations\1623707513_update_role.sql" />
     <EmbeddedResource Include="Migrations\1623956745_configuration.sql" />
+    <EmbeddedResource Include="Migrations\1625978546_campaign.sql" />
+    <EmbeddedResource Include="Migrations\1625977885_permission_migration.sql" />
+    <EmbeddedResource Include="Migrations\1625983022_campaign_reward.sql" />
   </ItemGroup>
 
   <ItemGroup>

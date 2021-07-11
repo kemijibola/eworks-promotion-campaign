@@ -2,6 +2,7 @@
 using EWorksPromotionCampaign.Service.Data;
 using EWorksPromotionCampaign.Service.Validators;
 using EWorksPromotionCampaign.Service.Validators.Admin;
+using EWorksPromotionCampaign.Shared.Models;
 using EWorksPromotionCampaign.Shared.Models.Admin;
 using EWorksPromotionCampaign.Shared.Models.Admin.Input;
 using EWorksPromotionCampaign.Shared.Models.Admin.Output;
@@ -18,7 +19,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
     {
         Task<AddResult<CreateConfigurationOutputModel>> CreateConfiguration(CreateConfigurationInputModel model);
         Task<Result<UpdateConfigurationOutputModel>> UpdateConfiguration(UpdateConfigurationInputModel model);
-        Task<Result<string>> DeleteConfiguration(long id);
+        Task<Result<MessageOutputModel>> DeleteConfiguration(long id);
         Result<IReadOnlyCollection<ConfigurationModel>> GetConfigurationKeys();
         Task<Result<FetchConfigurationsOutputModel>> GetConfigurations();
     }
@@ -45,15 +46,15 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             return new AddResult<CreateConfigurationOutputModel>(validationResult, validationResult.IsValid, null);
         }
 
-        public async Task<Result<string>> DeleteConfiguration(long id)
+        public async Task<Result<MessageOutputModel>> DeleteConfiguration(long id)
         {
             var validationResult = _configurationValidator.ValidateDeleteConfig(id);
             if (validationResult.IsValid)
             {
                 await _configurationRepository.Delete(id);
-                return new Result<string>(validationResult, "Configuration deleted successfully");
+                return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("Configuration deleted successfully"));
             }
-            return new Result<string>(validationResult, null);
+            return new Result<MessageOutputModel>(validationResult, null);
         }
 
         public Result<IReadOnlyCollection<ConfigurationModel>> GetConfigurationKeys()

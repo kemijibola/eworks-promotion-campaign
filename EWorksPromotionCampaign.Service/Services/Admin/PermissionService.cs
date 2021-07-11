@@ -3,6 +3,7 @@ using EWorksPromotionCampaign.Service.Data;
 using EWorksPromotionCampaign.Service.Validators;
 using EWorksPromotionCampaign.Service.Validators.Admin;
 using EWorksPromotionCampaign.Shared.Exceptions;
+using EWorksPromotionCampaign.Shared.Models;
 using EWorksPromotionCampaign.Shared.Models.Admin.Input;
 using EWorksPromotionCampaign.Shared.Models.Admin.Output;
 using EWorksPromotionCampaign.Shared.Util;
@@ -17,7 +18,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
     {
         Task<Result<FetchPermissionOutputModel>> GetPermissionById(int permissionId);
         Task<bool> PermissionExist(int permissionId);
-        Task<Result<string>> UpdatePermissionStatus(UpdatePermissionStatusInputModel model);
+        Task<Result<MessageOutputModel>> UpdatePermissionStatus(UpdatePermissionStatusInputModel model);
         Task<Result<FetchPermissionsOutputModel>> GetPermissions();
         // Task<AddResult<CreatePermissionOutputModel>> CreatePermission(CreatePermissionInputModel model);
     }
@@ -65,7 +66,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             return true;       
         }
 
-        public async Task<Result<string>> UpdatePermissionStatus(UpdatePermissionStatusInputModel model)
+        public async Task<Result<MessageOutputModel>> UpdatePermissionStatus(UpdatePermissionStatusInputModel model)
         {
             var validationResult = _permissionValidator.ValidateUpdatePermissionStatus(model);
             if (validationResult.IsValid)
@@ -78,7 +79,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                     await _permissionRepository.UpdateStatus(permissionModel);
                 }
             }
-            return new Result<string>(validationResult, "Permission status has been updated.");
+            return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("Permission status has been updated."));
         }
     }
 }

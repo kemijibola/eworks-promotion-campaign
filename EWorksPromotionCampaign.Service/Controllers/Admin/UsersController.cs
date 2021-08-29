@@ -137,6 +137,27 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
         }
+
+        [HasPermission(Permission.CanViewAdminUsers)]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, int pageSize = 5,
+            string searchText = "")
+        {
+            try
+            {
+                var result = await _adminUserService.FetchAdminUsers(pageNumber, pageSize, searchText);
+                if (result.IsSuccess)
+                    return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
+                return BadRequest(new { responseCode = ResponseCodes.InvalidRequest, responseDescription = result.Description });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
+            }
+        }
+
         private AdminUser GetAuthUser()
         {
             return JsonConvert.DeserializeObject<AdminUser>(User.Claims.FirstOrDefault(c => c.Type == "User")?.Value);

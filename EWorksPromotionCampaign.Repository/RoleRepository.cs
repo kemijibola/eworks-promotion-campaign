@@ -17,6 +17,7 @@ namespace EWorksPromotionCampaign.Repository
         Task ResetRolePermissions(int roleId, int[] permissionIds);
         Task UpdateStatus(Role role);
         Task<Role> FindByRoleName(string name);
+        Task<string> DeleteTransaction(long id);
     }
     public class RoleRepository : IRoleRepository
     {
@@ -43,9 +44,30 @@ namespace EWorksPromotionCampaign.Repository
             return roleId;
         }
 
-        public Task Delete<TItem>(TItem id)
+        public async Task<string> DeleteTransaction(long id)
         {
-            throw new NotImplementedException();
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            return await conn.QueryFirstOrDefaultAsync<string>(
+                @"usp_delete_role_transaction", new
+                {
+                    role_id = id
+                },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task Delete<TItem>(TItem id)
+        {
+            await using var conn = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            await conn.ExecuteAsync(
+                @"usp_delete_role", new
+                {
+                    role_id = id
+                },
+                commandType: CommandType.StoredProcedure
+            );
         }
 
         public async Task<IReadOnlyCollection<Role>> Fetch()

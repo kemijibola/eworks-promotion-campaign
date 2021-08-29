@@ -19,6 +19,9 @@
     <None Remove="Migrations\1627123695_campaign_codes.sql" />
     <None Remove="Migrations\1629047969_subscription.sql" />
     <None Remove="Migrations\1629048717_raffle_draw.sql" />
+    <None Remove="Migrations\1630216594_delete_role.sql" />
+    <None Remove="Migrations\1630217255_process_instant_winning.sql" />
+    <None Remove="Migrations\1630217899_get_admin_users.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +39,9 @@
     <EmbeddedResource Include="Migrations\1627123695_campaign_codes.sql" />
     <EmbeddedResource Include="Migrations\1629047969_subscription.sql" />
     <EmbeddedResource Include="Migrations\1629048717_raffle_draw.sql" />
+    <EmbeddedResource Include="Migrations\1630216594_delete_role.sql" />
+    <EmbeddedResource Include="Migrations\1630217899_get_admin_users.sql" />
+    <EmbeddedResource Include="Migrations\1630217255_process_instant_winning.sql" />
   </ItemGroup>
 
   <ItemGroup>

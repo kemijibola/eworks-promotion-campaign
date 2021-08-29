@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using AdminUser = EWorksPromotionCampaign.Shared.Models.Admin.Domain.User;
+using EWorksPromotionCampaign.Shared.Models.Admin;
+using System.Dynamic;
 
 namespace EWorksPromotionCampaign.Repository
 {
@@ -25,6 +27,7 @@ namespace EWorksPromotionCampaign.Repository
         Task<AdminUser> FindAdminById(long id);
         Task UpdateAdminUserStatus(AdminUser user);
         Task UpdateAdminUserDisabledStatus(AdminUser user);
+        Task<IReadOnlyCollection<AdminUserOverview>> GetAdminUserOverviews(int pageNumber, int pageSize, string searchText);
     }
 
     public class UserRepository : IUserRepository
@@ -250,6 +253,25 @@ namespace EWorksPromotionCampaign.Repository
                 },
                 commandType: CommandType.StoredProcedure
             );
+        }
+
+        public async Task<IReadOnlyCollection<AdminUserOverview>> GetAdminUserOverviews(int pageNumber, int pageSize, string searchText)
+        {
+            await using var connection = new SqlConnection(_defaultConnectionString);
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+            dynamic parameters = new ExpandoObject();
+            parameters.page_number = pageNumber;
+            parameters.page_size = pageSize;
+            if (!string.IsNullOrEmpty(searchText))
+              parameters.search_text = searchText;
+
+            var adminUsers = await connection.QueryAsync<AdminUserOverview>(
+                @"usp_get_admin_users_overview",
+                (object)parameters,
+                commandType: CommandType.StoredProcedure
+            );
+            return adminUsers as IReadOnlyCollection<AdminUserOverview>;
         }
     }
 }

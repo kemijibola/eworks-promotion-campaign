@@ -9,11 +9,10 @@ using EWorksPromotionCampaign.Shared.Models.Admin.Input;
 using EWorksPromotionCampaign.Shared.Util;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using static EWorksPromotionCampaign.Shared.Util.Enums;
 using EWorksPromotionCampaign.Shared.Models;
+using EWorksPromotionCampaign.Service.Validators;
 
 namespace EWorksPromotionCampaign.Service.Services.Admin
 {
@@ -25,6 +24,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
         Task<Result<FetchUserByEmailOutputModel>> GetByEmail(string email);
         Task<Result<MessageOutputModel>> UpdateUserStatus(UpdateUserStatusInputModel model);
         Task<Result<MessageOutputModel>> UpdateUserDisabledStatus(UpdateDisabledStatusInputModel model);
+        Task<Result<FetchAdminUserOverviewOutputModel>> FetchAdminUsers(int pageNumber, int pageSize, string searchText);
     }
     public class UserService : IUserService
     {
@@ -85,6 +85,12 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 return new AddResult<CreateAdminUserOutputModel>(validationResult, false, CreateAdminUserOutputModel.FromUser(user));
             }
             return new AddResult<CreateAdminUserOutputModel>(validationResult, validationResult.IsValid, null);
+        }
+
+        public async Task<Result<FetchAdminUserOverviewOutputModel>> FetchAdminUsers(int pageNumber, int pageSize, string searchText)
+        {
+            var users = await _userRepository.GetAdminUserOverviews(pageNumber, pageSize, searchText);
+            return new Result<FetchAdminUserOverviewOutputModel>(new ValidationResult(), FetchAdminUserOverviewOutputModel.FromAdminUsers(users));
         }
 
         public async Task<Result<FetchUserByEmailOutputModel>> GetByEmail(string email)

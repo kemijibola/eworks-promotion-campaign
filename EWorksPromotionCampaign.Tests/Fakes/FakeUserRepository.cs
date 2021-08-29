@@ -1,4 +1,5 @@
 ﻿using EWorksPromotionCampaign.Repository;
+using EWorksPromotionCampaign.Shared.Models.Admin;
 using EWorksPromotionCampaign.Shared.Models.Domain;
 using System;
 using System.Collections.Generic;
@@ -169,6 +170,11 @@ namespace EWorksPromotionCampaign.Tests.Fakes
         }
 
         public Task UpdateAdminUserDisabledStatus(AdminUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IReadOnlyCollection<AdminUserOverview>> GetAdminUserOverviews(int pageNumber, int pageSize, string searchText)
         {
             throw new NotImplementedException();
         }

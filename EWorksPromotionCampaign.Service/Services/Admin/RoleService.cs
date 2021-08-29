@@ -25,6 +25,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
         Task<Result<MessageOutputModel>> UpdateRoleStatus(UpdateRoleStatusInputModel model);
         Task<Result<FetchRolesOutputModel>> GetRoles();
         Task<Result<MessageOutputModel>> UpdateRole(UpdateRoleInputModel model);
+        Task<Result<MessageOutputModel>> DeleteRole(long id);
     }
     public class RoleService : IRoleService
     {
@@ -49,6 +50,16 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 return new AddResult<CreateRoleOutputModel>(validationResult, false, CreateRoleOutputModel.FromRole(role));
             }
             return new AddResult<CreateRoleOutputModel>(validationResult, validationResult.IsValid, null);
+        }
+
+        public async Task<Result<MessageOutputModel>> DeleteRole(long id)
+        {
+            var result = await _roleRepository.DeleteTransaction(id);
+            var results = result.Split(':');
+            var (statusCode, responseCode) = Helper.MapDbResponseCodeToStatusCode(results[0]);
+            if (!responseCode.Equals(ResponseCodes.Success))
+                throw new ServiceException(responseCode, results[1].Trim(), statusCode);
+            return new Result<MessageOutputModel>(new ValidationResult(), MessageOutputModel.FromStringMessage("Role deleted successfully"));
         }
 
         public async Task<Result<FetchRoleOutputModel>> GetRoleById(int roleId)

@@ -178,7 +178,39 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
             }
             catch (ServiceException sEx)
             {
-                _logger.LogError($"Unable to update user status: {sEx.Message} {sEx.StackTrace}");
+                _logger.LogError($"Unable to update role status: {sEx.Message} {sEx.StackTrace}");
+                return StatusCode(sEx.StatusCode, new ServiceResponse(sEx.ResponseCode, sEx.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
+            }
+        }
+
+        [HasPermission(Permission.CanCreateAdminRole)]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteRole(long id)
+        {
+            try
+            {
+                if (id < 1)
+                    return BadRequest(new
+                    {
+                        ResponseCode = ResponseCodes.InvalidRequest,
+                        ResponseDescription = "Provide a valid role id"
+                    });
+                var result = await _roleService.DeleteRole(id);
+                if (result.IsSuccess)
+                    return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
+                return BadRequest(new { responseCode = ResponseCodes.InvalidRequest, responseDescription = result.Description });
+            }
+            catch (ServiceException sEx)
+            {
+                _logger.LogError($"Unable to delete role: {sEx.Message} {sEx.StackTrace}");
                 return StatusCode(sEx.StatusCode, new ServiceResponse(sEx.ResponseCode, sEx.Message));
             }
             catch (Exception ex)

@@ -45,7 +45,10 @@ namespace EWorksPromotionCampaign.Shared.Util
             MaximumDailyCashLimit,
             MaximumDailyAirtimeLimitReachedMessage,
             MaximumDailyCashLimitReachedMessage,
-            CashWiningMessage
+            CashWiningMessage,
+            AirtimeWinningMessage,
+            CashWinningRetryLimit,
+            AirtimeWinningRetryLimit,
         }
         public enum CampaignStatus
         {
@@ -75,7 +78,7 @@ namespace EWorksPromotionCampaign.Shared.Util
             Weekly,
             Monthly
         }
-        public enum WinningStatus
+        public enum RewardStatus
         {
             Inactive = 0,
             Active
@@ -85,6 +88,19 @@ namespace EWorksPromotionCampaign.Shared.Util
             FirstComeFirstWin = 0,
             AnyRandomUserWins,
             EveryNthSubscriber
+        }
+        public enum SubscriberStatus
+        {
+            Inactive = 0,
+            Subscribed = 1,
+            Drawn = 2,
+            Won = 3
+        }
+
+        public enum RaffleRewardTypeStatus
+        {
+            NotDrawn, 
+            Drawn
         }
     }
 }

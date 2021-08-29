@@ -1,5 +1,6 @@
 ﻿using EWorksPromotionCampaign.Repository;
 using EWorksPromotionCampaign.Service.Data;
+using EWorksPromotionCampaign.Service.Util;
 using EWorksPromotionCampaign.Service.Validators;
 using EWorksPromotionCampaign.Service.Validators.Admin;
 using EWorksPromotionCampaign.Shared.Exceptions;
@@ -8,8 +9,6 @@ using EWorksPromotionCampaign.Shared.Models.Admin.Input;
 using EWorksPromotionCampaign.Shared.Models.Admin.Output;
 using EWorksPromotionCampaign.Shared.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using static EWorksPromotionCampaign.Shared.Util.Enums;
 
@@ -46,7 +45,6 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             }
             return new AddResult<CreateCampaignOutputModel>(validationResult, validationResult.IsValid, null);
         }
-
         public async Task<Result<EditCampaignOutputModel>> EditCampaign(EditCampaignInputModel model)
         {
             var validationResult = _campaignValidator.ValidateExistingCampaign(model);
@@ -95,7 +93,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             foreach (var item in campaignResult.Data.CampaignRewards)
             {
                 if (item.StartMode.Equals(StartMode.Automatic.ToString()))
-                    item.Status = WinningStatus.Inactive.ToString();
+                    item.Status = RewardStatus.Inactive.ToString();
             }
             await _campaignRepository.Update(campaign, campaignResult.Data.CampaignRewards);
             return new Result<MessageOutputModel>(new ValidationResult(), MessageOutputModel.FromStringMessage("Campaign paused successfully"));
@@ -112,7 +110,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             foreach (var item in campaignResult.Data.CampaignRewards)
             {
                 if (item.StartMode.Equals(StartMode.Automatic.ToString()))
-                    item.Status = WinningStatus.Active.ToString();
+                    item.Status = RewardStatus.Active.ToString();
             }
             await _campaignRepository.Update(campaign, campaignResult.Data.CampaignRewards);
             return new Result<MessageOutputModel>(new ValidationResult(), MessageOutputModel.FromStringMessage("Campaign started successfully"));

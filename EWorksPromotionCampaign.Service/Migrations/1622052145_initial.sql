@@ -43,14 +43,32 @@ IF OBJECT_ID('tbl_campaigns', 'U') IS NULL
     end
 go
 
+IF OBJECT_ID('tbl_subscribers', 'U') IS NULL
+    begin
+        create TABLE [dbo].[tbl_subscribers]
+        (
+            [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
+            [hashed_code]          varchar(100)                NOT NULL,
+            [plain_code]           varchar(100)     NULL,
+            [user_id]               bigint       NOT NULL references tbl_users (id),
+            [phone]                varchar(14)        NULL,
+            [telco]                varchar(20)        NULL,
+            [date_subscribed]      datetime           NOT NULL,
+            [status]               varchar(15)        NOT NULL,
+            [campaign_id]          bigint             references tbl_campaigns (id),
+            [created_at]            datetime           default (GETUTCDATE()),
+        ) ON [PRIMARY]
+    end
+go
+
 IF OBJECT_ID('tbl_generated_codes', 'U') IS NULL
     begin
         create TABLE [dbo].[tbl_generated_codes]
         (
             [id]                    bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
             [hashed_code]           varchar(50) UNIQUE NOT NULL,
-            [campaign_id]           bigint            references tbl_campaigns (id),
-            [user_id]               bigint             NULL references tbl_users (id),
+            [campaign_id]           bigint              references tbl_campaigns (id),
+            [user_id]         bigint        NULL references tbl_users (id),
             [created_at]            datetime           default (GETUTCDATE()),
             [updated_at]            datetime           NULL
         ) ON [PRIMARY]
@@ -77,7 +95,7 @@ IF OBJECT_ID('tbl_campaign_rewards', 'U') IS NULL
             [winning_type]          varchar(15)        NOT NULL,
             [campaign_type]          varchar(15)       NOT NULL,
             [start_mode]           varchar(15)          NOT NULL,
-            [schedule_type]          varchar(15)          NOT NULL,
+            [schedule_type]          varchar(15)        NOT NULL,
             [amount]                decimal(18,2)       NOT NULL,
             [start_date]           datetime             NOT NULL,
             [end_date]             datetime             NOT NULL,
@@ -94,11 +112,11 @@ IF OBJECT_ID('tbl_campaign_winning_retries', 'U') IS NULL
     begin
         create TABLE [dbo].[tbl_campaign_winning_retries]
         (
-            [id]                    bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [campaign_id]           bigint            references tbl_campaigns (id),
-            [winning_type]          varchar(15)        NOT NULL,
+            [id]                    bigint           NOT NULL IDENTITY (1, 1) PRIMARY KEY,
+            [campaign_id]           bigint           references tbl_campaigns (id),
+            [winning_type]          varchar(15)      NOT NULL,
             [retry_for]             int             NOT NULL,
-            [created_at]            datetime           default (GETUTCDATE()),
+            [created_at]            datetime         default (GETUTCDATE()),
         ) ON [PRIMARY]
     end
 go
@@ -120,7 +138,7 @@ IF OBJECT_ID('tbl_winnings', 'U') IS NULL
     begin
         create TABLE [dbo].[tbl_winnings]
         (
-            [id]                    bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
+            [subscriber_id]         bigint             NOT NULL PRIMARY KEY,
             [telco_code]            varchar(20)        NULL,
             [phone_number]          varchar(14)        NOT NULL,
             [amount]                decimal(18,2)      NOT NULL,
@@ -142,28 +160,10 @@ IF OBJECT_ID('tbl_vendor_airtime_requests', 'U') IS NULL
         (
             [id]                    bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
             [reference]             varchar(100)       NULL,
-            [user_id]               bigint             NOT NULL references tbl_users (id),
+            [subscriber_id]         bigint             NOT NULL references tbl_subscribers (id),
             [sms]                   varchar(256)       NOT NULL,
             [created_at]            datetime           default (GETUTCDATE()),
             [updated_at]            datetime           NULL
-        ) ON [PRIMARY]
-    end
-go
-
-IF OBJECT_ID('tbl_subscribers', 'U') IS NULL
-    begin
-        create TABLE [dbo].[tbl_subscribers]
-        (
-            [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [hashed_code]          varchar(100)                NOT NULL,
-            [plain_code]           varchar(100)     NULL,
-            [full_name]            varchar(100)       NULL,
-            [phone]                varchar(14)        NULL,
-            [telco]                varchar(20)        NULL,
-            [date_subscribed]      datetime           NOT NULL,
-            [status]               varchar(15)        NOT NULL,
-            [campaign_id]          bigint             references tbl_campaigns (id),
-            [created_at]            datetime           default (GETUTCDATE()),
         ) ON [PRIMARY]
     end
 go
@@ -188,54 +188,24 @@ IF OBJECT_ID('tbl_raffle_reward_types', 'U') IS NULL
         create TABLE [dbo].[tbl_raffle_reward_types]
         (
             [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
+            campaign_id            bigint              NOT NULL REFERENCES tbl_campaigns(id),
             [start_date]           datetime             NOT NULL,
             [end_date]             datetime             NOT NULL,
             [number_of_winners]    int                  NOT NULL,
             [amount]               decimal(18,2)        NOT NULL,
-            [status]               varchar(15)       NULL,
+            [status]               varchar(15)          NULL,
             [created_at]           datetime           default (GETUTCDATE()),
         ) ON [PRIMARY]
     end
 go
 
-IF OBJECT_ID('tbl_raffle_reward_types', 'U') IS NULL
-    begin
-        create TABLE [dbo].[tbl_raffle_reward_types]
-        (
-            [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [start_date]           datetime             NOT NULL,
-            [end_date]             datetime             NOT NULL,
-            [number_of_winners]    int                  NOT NULL,
-            [amount]               decimal(18,2)        NOT NULL,
-            [status]               varchar(15)       NULL,
-            [created_at]           datetime           default (GETUTCDATE()),
-        ) ON [PRIMARY]
-    end
-go
-
-IF OBJECT_ID('tbl_raffle_reward_types', 'U') IS NULL
-    begin
-        create TABLE [dbo].[tbl_raffle_reward_types]
-        (
-            [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [start_date]           datetime             NOT NULL,
-            [end_date]             datetime             NOT NULL,
-            [number_of_winners]    int                  NOT NULL,
-            [amount]               decimal(18,2)        NOT NULL,
-            [status]               varchar(15)       NULL,
-            [created_at]           datetime           default (GETUTCDATE()),
-        ) ON [PRIMARY]
-    end
-go
 
 IF OBJECT_ID('tbl_raffle_winnings', 'U') IS NULL
     begin
         create TABLE [dbo].[tbl_raffle_winnings]
         (
-            [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [user_id]               bigint             NOT NULL references tbl_users (id),
+            [subscriber_id]        bigint             NOT NULL  PRIMARY KEY,
             [amount_won]               decimal(18,2)        NOT NULL,
-            [status]               varchar(15)       NULL,
             [created_at]           datetime           default (GETUTCDATE()),
         ) ON [PRIMARY]
     end
@@ -247,7 +217,7 @@ IF OBJECT_ID('tbl_cash_requests', 'U') IS NULL
         create TABLE [dbo].[tbl_cash_requests]
         (
             [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
-            [user_id]              bigint             NOT NULL references tbl_users (id),
+            [subscriber_id]        bigint             NOT NULL references tbl_subscribers (id),
             [amount]               decimal(18,2)      NOT NULL,
             [reference]            varchar(100)       NULL,
             [status]               varchar(15)        NOT NULL,
@@ -264,7 +234,7 @@ IF OBJECT_ID('tbl_orders', 'U') IS NULL
         (
             [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
             [user_id]              bigint             NOT NULL references tbl_users (id),
-            [amount_paid]               decimal(18,2)      NOT NULL,
+            [amount]          decimal(18,2)            NOT NULL,
             [campaign_id]          bigint             references tbl_campaigns (id),
             [status]               varchar(15)        NOT NULL,
             [reference]             varchar(100)      NOT NULL,

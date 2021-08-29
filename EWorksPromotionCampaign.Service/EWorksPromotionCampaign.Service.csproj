@@ -16,6 +16,9 @@
     <None Remove="Migrations\1625977885_permission_migration.sql" />
     <None Remove="Migrations\1625978546_campaign.sql" />
     <None Remove="Migrations\1625983022_campaign_reward.sql" />
+    <None Remove="Migrations\1627123695_campaign_codes.sql" />
+    <None Remove="Migrations\1629047969_subscription.sql" />
+    <None Remove="Migrations\1629048717_raffle_draw.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +33,9 @@
     <EmbeddedResource Include="Migrations\1625978546_campaign.sql" />
     <EmbeddedResource Include="Migrations\1625977885_permission_migration.sql" />
     <EmbeddedResource Include="Migrations\1625983022_campaign_reward.sql" />
+    <EmbeddedResource Include="Migrations\1627123695_campaign_codes.sql" />
+    <EmbeddedResource Include="Migrations\1629047969_subscription.sql" />
+    <EmbeddedResource Include="Migrations\1629048717_raffle_draw.sql" />
   </ItemGroup>
 
   <ItemGroup>

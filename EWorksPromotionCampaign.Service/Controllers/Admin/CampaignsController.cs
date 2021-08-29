@@ -225,5 +225,40 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
         }
+
+        [HasPermission(Permission.CanPauseCampaign)]
+        [HttpPost("{id}/raffle")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateRaffleReward(long id, [FromBody] string action)
+        {
+            try
+            {
+                var actionDictionary = new Dictionary<string, string>
+                {
+                    { "start", "start"},
+                    { "pause", "pause"}
+                };
+                if (actionDictionary.ContainsKey(action))
+                {
+                    var result = action.Equals("start", StringComparison.InvariantCultureIgnoreCase) ? await _campaignRewardService.StartCampaignReward(id) : await _campaignRewardService.PauseCampaignReward(id);
+                    if (result.IsSuccess)
+                        return StatusCode(StatusCodes.Status200OK, new { ResponseCode = ResponseCodes.Success, ResponseDescripion = "Success", result.Data });
+                    return BadRequest(new { responseCode = ResponseCodes.InvalidRequest, responseDescription = result.Description });
+                }
+                return BadRequest(new { responseCode = ResponseCodes.InvalidRequest, responseDescription = "Invalid action" });
+            }
+            catch (ServiceException sEx)
+            {
+                _logger.LogError($"Unable to start/pause campaign reward: {sEx.Message} {sEx.StackTrace}");
+                return StatusCode(sEx.StatusCode, new ServiceResponse(sEx.ResponseCode, sEx.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
+            }
+        }
     }
 }

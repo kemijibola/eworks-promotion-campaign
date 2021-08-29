@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using EWorksPromotionCampaign.Shared.Util;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using static EWorksPromotionCampaign.Shared.Util.Enums;
@@ -45,6 +48,21 @@ namespace EWorksPromotionCampaign.Service.Util
                 string.Join(" | ", modelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
+        }
+
+        public static (int, string) MapDbResponseCodeToStatusCode(string code)
+        {
+            var responseCode = code switch
+            {
+                "00" => (200, ResponseCodes.Success),
+                "09" => (409, ResponseCodes.Conflict),
+                "04" => (404, ResponseCodes.NotFound),
+                "05" => (400, ResponseCodes.InvalidRequest),
+                "08" => (401, ResponseCodes.Unauthorized),
+                "07" => (403, ResponseCodes.Forbidden),
+                _ => (201, ResponseCodes.Success)
+            };
+            return responseCode;
         }
     }
 }

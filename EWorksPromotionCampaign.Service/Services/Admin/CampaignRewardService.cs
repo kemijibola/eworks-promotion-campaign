@@ -45,8 +45,8 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 throw new ServiceException(ResponseCodes.Conflict, "There's already a winning with the amount specified", 409);
             if (validationResult.IsValid)
             {
-                var campaignRewardStatus = campaign.Status.Equals(CampaignStatus.ongoing.ToString(), StringComparison.InvariantCultureIgnoreCase) ? 
-                    WinningStatus.Active.ToString() : WinningStatus.Inactive.ToString();
+                var campaignRewardStatus = campaign.Status.Equals(CampaignStatus.ongoing.ToString(), StringComparison.InvariantCultureIgnoreCase) ?
+                    RewardStatus.Active.ToString() : RewardStatus.Inactive.ToString();
                 var campaignReward = model.ToCampaignReward(campaignRewardStatus);
                 campaignReward.Id = await _campaignRewardRepository.Create(campaignReward);
                 return new Result<CreateCampaignRewardOutputModel>(validationResult, CreateCampaignRewardOutputModel.FromCampaignReward(campaignReward));
@@ -80,7 +80,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 throw new ServiceException(ResponseCodes.InvalidRequest, "Campaign has expired", 400);
 
             if (existingCampaignReward.StartMode.Equals(StartMode.Automatic.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                existingCampaignReward.Status = WinningStatus.Inactive.ToString();
+                existingCampaignReward.Status = RewardStatus.Inactive.ToString();
 
             await _campaignRewardRepository.UpdateCampaignRewardStatus(existingCampaignReward);
             return new Result<MessageOutputModel>(new ValidationResult(), MessageOutputModel.FromStringMessage("Campaign Reward paused successfully"));
@@ -100,7 +100,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
                 throw new ServiceException(ResponseCodes.InvalidRequest, "Campaign has expired", 400);
 
             if (existingCampaignReward.StartMode.Equals(StartMode.Automatic.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                existingCampaignReward.Status = WinningStatus.Active.ToString();
+                existingCampaignReward.Status = RewardStatus.Active.ToString();
 
             await _campaignRewardRepository.UpdateCampaignRewardStatus(existingCampaignReward);
             return new Result<MessageOutputModel>(new ValidationResult(), MessageOutputModel.FromStringMessage("Campaign Reward started successfully"));

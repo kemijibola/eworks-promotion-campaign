@@ -24,6 +24,7 @@ namespace EWorksPromotionCampaign.Shared.Util
         {
             new ConfigurationModel { Key = ConfigurationType.BlacklistedSubscriberMessage.ToString(), Value = "Blacklisted Subscriber Message", Type = "string" },
             new ConfigurationModel { Key = ConfigurationType.CashWiningMessage.ToString(), Value = "Cash Wining Message", Type = "string" },
+            new ConfigurationModel { Key = ConfigurationType.AirtimeWinningMessage.ToString(), Value = "Airtime Wining Message", Type = "string" },
             new ConfigurationModel { Key = ConfigurationType.DailySubscriptionlimit.ToString(), Value = "Daily Subscription Limit", Type = "int" },
             new ConfigurationModel { Key = ConfigurationType.DefaultSMSMessage.ToString(), Value = "Default SMS Message", Type = "string" },
             new ConfigurationModel { Key = ConfigurationType.EmailPortalName.ToString(), Value = "Email Portal Name", Type = "string" },
@@ -42,6 +43,8 @@ namespace EWorksPromotionCampaign.Shared.Util
             new ConfigurationModel { Key = ConfigurationType.RetryWaitSeconds.ToString(), Value = "Retry Wait Seconds", Type = "int" },
             new ConfigurationModel { Key = ConfigurationType.UsedRewardCodeMessage.ToString(), Value = "Used Reward Code Message", Type = "string" },
             new ConfigurationModel { Key = ConfigurationType.WeeklyDrawDay.ToString(), Value = "Weekly Draw Day", Type = "string" },
+            new ConfigurationModel { Key = ConfigurationType.CashWinningRetryLimit.ToString(), Value = "Cash Winning Retry Limit", Type = "int" },
+            new ConfigurationModel { Key = ConfigurationType.AirtimeWinningRetryLimit.ToString(), Value = "Airtime Winning Retry Limit", Type = "int" },
         };
 
         public static Type ConfigurationValueType(string dataType)

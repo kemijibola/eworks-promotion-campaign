@@ -10,12 +10,12 @@ namespace EWorksPromotionCampaign.Shared.Models.Admin.Input
 {
     public class UpdateAdminUserInputModel
     {
-        public long Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        [EmailAddress] public string Email { get; set; }
+        [Required] public long Id { get; set; }
+        [Required] public string FirstName { get; set; }
+        [Required] public string LastName { get; set; }
+        [Required] [EmailAddress] public string Email { get; set; }
         public string Phone { get; set; }
-        public int RoleId { get; set; }
+        [Required] public int RoleId { get; set; }
         public AdminUser ToUser(AdminUser existingUser)
         {
             var user = new AdminUser(Id)

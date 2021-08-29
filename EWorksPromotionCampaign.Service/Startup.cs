@@ -44,6 +44,10 @@ namespace EWorksPromotionCampaign.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddControllers();
             services.AddHealthChecks();
@@ -129,12 +133,15 @@ namespace EWorksPromotionCampaign.Service
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EWorksPromotionCampaign.Service v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EWorksPromotionCampaign.Service v1"));
 
             app.UseHttpsRedirection();
 
@@ -161,6 +168,8 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
             services.AddSingleton<ICampaignRepository, CampaignRepository>();
             services.AddSingleton<ICampaignRewardRepository, CampaignRewardRepository>();
+            services.AddSingleton<IRaffleRepository, RaffleRepository>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
             #endregion
 
             #region Services
@@ -183,6 +192,7 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IConfigurationValidator, ConfigurationValidator>();
             services.AddSingleton<ICampaignRewardValidator, CampaignRewardValidator>();
             services.AddSingleton<ICampaignValidator, CampaignValidator>();
+            services.AddSingleton<IRaffleValidator, RaffleValidator>();
             #endregion
 
             #region Configurations

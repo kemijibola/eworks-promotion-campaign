@@ -19,7 +19,7 @@ namespace EWorksPromotionCampaign.Service.Services
     {
         Task<AddResult<RegisterOutputModel>> AddUser(RegisterInputModel model);
         Task<Result<LoginOutputModel>> Authenticate(LoginInputModel model);
-        Task<User> GetUserByEmail(string email);
+        Task<Result<FetchUserByEmailOutputModel>> GetUserByEmail(string email);
     }
     public class UserService : IUserService
     {
@@ -65,7 +65,7 @@ namespace EWorksPromotionCampaign.Service.Services
             {
                 var identifier = string.IsNullOrEmpty(model.Email) ? model.Phone : model.Email;
                 var user = await _userRepository.GetUserByIdentifier(identifier);
-                _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "User not found", 404);
+                _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "Invalid username/password", 404);
                 var isValidated = PasswordHash.Validate(model.Password, user.PasswordSalt, user.PasswordHash);
                 if (!isValidated)
                     return null;
@@ -75,9 +75,13 @@ namespace EWorksPromotionCampaign.Service.Services
             return new Result<LoginOutputModel>(validationResult, null);
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<Result<FetchUserByEmailOutputModel>> GetUserByEmail(string email)
         {
-            return await _userRepository.GetUserByEmail(email);
+            var validationResult = new ValidationResult();
+            var existingUser = await _userRepository.GetUserByEmail(email);
+            if (existingUser is null)
+                return new Result<FetchUserByEmailOutputModel>(validationResult, null);
+            return new Result<FetchUserByEmailOutputModel>(validationResult, FetchUserByEmailOutputModel.FromUser(existingUser));
         }
         //public async Task<Result<UpdateUserOutputModel>> UpdateUser(UpdateUserInputModel model)
         //{

@@ -22,6 +22,7 @@
     <None Remove="Migrations\1630216594_delete_role.sql" />
     <None Remove="Migrations\1630217255_process_instant_winning.sql" />
     <None Remove="Migrations\1630217899_get_admin_users.sql" />
+    <None Remove="Migrations\1630425897_order.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,7 @@
     <EmbeddedResource Include="Migrations\1630216594_delete_role.sql" />
     <EmbeddedResource Include="Migrations\1630217899_get_admin_users.sql" />
     <EmbeddedResource Include="Migrations\1630217255_process_instant_winning.sql" />
+    <EmbeddedResource Include="Migrations\1630425897_order.sql" />
   </ItemGroup>
 
   <ItemGroup>

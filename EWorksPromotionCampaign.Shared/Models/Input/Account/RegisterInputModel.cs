@@ -11,13 +11,13 @@ namespace EWorksPromotionCampaign.Shared.Models.Input
     public class RegisterInputModel
     {
         public long Id { get; set; }
-        public string FirstName { get; set; }
+        [Required] public string FirstName { get; set; }
         public string MiddleName { get; set; }
-        public string LastName { get; set; }
-        public string Phone { get; set; }
-        [EmailAddress] public string Email { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
+        [Required] public string LastName { get; set; }
+        [Required] public string Phone { get; set; }
+        [Required][EmailAddress] public string Email { get; set; }
+        [Required] public string Password { get; set; }
+        [Compare("Password", ErrorMessage = "ConfirmPassword must be the same as Password")]public string ConfirmPassword { get; set; }
         public string Address { get; set; }
         [Required] public DateTime DateOfBirth { get; set; }
 

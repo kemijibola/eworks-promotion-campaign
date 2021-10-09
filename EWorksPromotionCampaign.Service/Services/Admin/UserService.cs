@@ -47,7 +47,7 @@ namespace EWorksPromotionCampaign.Service.Services.Admin
             {
                 var identifier = string.IsNullOrEmpty(model.Email) ? model.Phone : model.Email;
                 var user = await _userRepository.GetAdminUserByIdetifier(identifier);
-                _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "User not found", 404);
+                _ = user ?? throw new ServiceException(ResponseCodes.NotFound, "Login failed.Check your credentials and try again!", 400);
                 if (user.LockedOut || !user.Status || user.RoleId == 0 || user.IsDisabled)
                     return null;
                 var isValidated = PasswordHash.Validate(model.Password, user.PasswordSalt, user.PasswordHash);

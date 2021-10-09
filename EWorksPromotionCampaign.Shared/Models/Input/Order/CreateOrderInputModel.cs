@@ -20,8 +20,7 @@ namespace EWorksPromotionCampaign.Shared.Models.Input.Order
             {
                 UserId = UserId,
                 Amount = Amount,
-                CampaignId = CampaignId,
-                Reference = HelperModel.GenerateOrderReference()
+                CampaignId = CampaignId
             };
             return order;
         }

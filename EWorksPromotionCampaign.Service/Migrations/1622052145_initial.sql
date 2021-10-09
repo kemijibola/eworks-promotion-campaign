@@ -68,7 +68,7 @@ IF OBJECT_ID('tbl_generated_codes', 'U') IS NULL
             [id]                    bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
             [hashed_code]           varchar(50) UNIQUE NOT NULL,
             [campaign_id]           bigint              references tbl_campaigns (id),
-            [user_id]         bigint        NULL references tbl_users (id),
+            [user_id]               bigint        NULL references tbl_users (id),
             [created_at]            datetime           default (GETUTCDATE()),
             [updated_at]            datetime           NULL
         ) ON [PRIMARY]
@@ -234,10 +234,10 @@ IF OBJECT_ID('tbl_orders', 'U') IS NULL
         (
             [id]                   bigint             NOT NULL IDENTITY (1, 1) PRIMARY KEY,
             [user_id]              bigint             NOT NULL references tbl_users (id),
-            [amount]          decimal(18,2)            NOT NULL,
+            [amount]               decimal(18,2)            NOT NULL,
             [campaign_id]          bigint             references tbl_campaigns (id),
             [status]               varchar(15)        NOT NULL,
-            [reference]             varchar(100)      NOT NULL,
+            [reference]            varchar(100)      NOT NULL,
             [created_at]           datetime           default (GETUTCDATE()),
             [updated_at]            datetime           NULL
         ) ON [PRIMARY]

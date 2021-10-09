@@ -19,7 +19,7 @@ namespace EWorksPromotionCampaign.Service.Services
 {
     public interface IPasswordService
     {
-        Task<Result<MessageOutputModel>> ForgotPassword(ForgotPasswordInputModel model);
+        Task<Result<MessageOutputModel>> ForgotPassword(Shared.Models.Input.ForgotPasswordInputModel model);
         Task<Result<MessageOutputModel>> ResetPassword(ResetPasswordInputModel model);
     }
     public class PasswordService : IPasswordService
@@ -42,11 +42,10 @@ namespace EWorksPromotionCampaign.Service.Services
             _emailTokenType = TokenType.jwt;
             _twoFactorRepository = twoFactorRepository;
         }
-        public async Task<Result<MessageOutputModel>> ForgotPassword(ForgotPasswordInputModel model)
+        public async Task<Result<MessageOutputModel>> ForgotPassword(Shared.Models.Input.ForgotPasswordInputModel model)
         {
-            var validationResult = _userValidator.ValidateForgotPassword(model);
             var existingUser = await _userService.GetUserByEmail(model.Email);
-            if (validationResult.IsValid && existingUser != null)
+            if (existingUser != null)
             {
                 var tokenGenerator = TwoFactorAuthentication.Type(_emailTokenType);
                 var (generatedToken, _, _) = tokenGenerator.GenerateToken(6, DigitType.alphanumeric);
@@ -58,12 +57,12 @@ namespace EWorksPromotionCampaign.Service.Services
 
                 //::TODO send password reset mail
             }
-            return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("We will send a reset email if the email matches an account."));
+            return new Result<MessageOutputModel>(new ValidationResult(), MessageOutputModel.FromStringMessage("We will send a reset email if the email matches an account."));
         }
 
         public async Task<Result<MessageOutputModel>> ResetPassword(ResetPasswordInputModel model)
         {
-            var validationResult = _userValidator.ValidateResetPassword(model);
+            var validationResult = new ValidationResult();
             var passwordTokenRequest = await _twoFactorRepository.GetTokenReqestByToken(model.Token);
             _ = passwordTokenRequest ?? throw new ServiceException(ResponseCodes.NotFound, "Invalid password reset token", 404);
             var existingUser = await _userService.GetUserByEmail(passwordTokenRequest.Requester);
@@ -78,7 +77,7 @@ namespace EWorksPromotionCampaign.Service.Services
                     return new Result<MessageOutputModel>(validationResult, null);
                 }
 
-                await ChangePassword(existingUser.Email, model.Password);
+                await ChangePassword(existingUser.Data.Email, model.Password);
                 await _twoFactorRepository.Delete(passwordTokenRequest.RequestId);
                 return new Result<MessageOutputModel>(validationResult, MessageOutputModel.FromStringMessage("Password reset successful"));
             }

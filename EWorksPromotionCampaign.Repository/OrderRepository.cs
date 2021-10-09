@@ -36,12 +36,6 @@ namespace EWorksPromotionCampaign.Repository
         {
             throw new NotImplementedException();
         }
-
-        public Task Update(long id, Order updateItem)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<string> Create(Order newItem)
         {
             await using var conn = new SqlConnection(_defaultConnectionString);
@@ -50,9 +44,7 @@ namespace EWorksPromotionCampaign.Repository
             {
                 user_id = newItem.UserId,
                 amount = newItem.Amount,
-                campaign_id = newItem.CampaignId,
-                status = newItem.Status,
-                reference = newItem.Reference,
+                campaign_id = newItem.CampaignId
             }, commandType: CommandType.StoredProcedure);
             return result;
         }

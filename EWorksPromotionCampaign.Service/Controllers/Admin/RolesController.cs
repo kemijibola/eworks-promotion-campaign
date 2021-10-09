@@ -11,14 +11,13 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AdminUser = EWorksPromotionCampaign.Shared.Models.Admin.Domain.User;
 
 namespace EWorksPromotionCampaign.Service.Controllers.Admin
 {
     [Authorize]
     [Route("api/v1/eadmin/[controller]")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class RolesController : BaseAdminApiController
     {
         private readonly ILogger<RolesController> _logger;
         private readonly IRoleService _roleService;
@@ -218,10 +217,6 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
-        }
-        private AdminUser GetAuthUser()
-        {
-            return JsonConvert.DeserializeObject<AdminUser>(User.Claims.FirstOrDefault(c => c.Type == "User")?.Value);
         }
     }
 }

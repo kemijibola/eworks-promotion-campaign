@@ -12,14 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AdminUser = EWorksPromotionCampaign.Shared.Models.Admin.Domain.User;
 
 namespace EWorksPromotionCampaign.Service.Controllers.Admin
 {
     [Authorize]
     [Route("api/v1/eadmin/[controller]")]
     [ApiController]
-    public class PermissionsController : ControllerBase
+    public class PermissionsController : BaseAdminApiController
     {
         private readonly ILogger<PermissionsController> _logger;
         private readonly IPermissionService _permissionService;
@@ -133,10 +132,6 @@ namespace EWorksPromotionCampaign.Service.Controllers.Admin
                 _logger.LogError($"An unexpected error occured: {ex.Message} {ex.StackTrace}");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResponseCode = ResponseCodes.UnexpectedError, ResponseDescripion = "An unexpected error occured. Please try again!" });
             }
-        }
-        private AdminUser GetAuthUser()
-        {
-            return JsonConvert.DeserializeObject<AdminUser>(User.Claims.FirstOrDefault(c => c.Type == "User")?.Value);
         }
     }
 }

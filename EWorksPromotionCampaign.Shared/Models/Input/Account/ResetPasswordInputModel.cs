@@ -9,9 +9,9 @@ namespace EWorksPromotionCampaign.Shared.Models.Input.Account
 {
     public class ResetPasswordInputModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
-        public string Token { get; set; }
+        [Required] public string Email { get; set; }
+        [Required] public string Password { get; set; }
+        [Compare("Password", ErrorMessage = "ConfirmPassword must be the same as Password")]public string ConfirmPassword { get; set; }
+        [Required] public string Token { get; set; }
     }
 }

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EWorksPromotionCampaign.Shared.Models.Input.Account
+namespace EWorksPromotionCampaign.Shared.Models.Input
 {
     public class ForgotPasswordInputModel
     {
-        [EmailAddress] public string Email { get; set; }
+        [Required][EmailAddress] public string Email { get; set; }
     }
 }

@@ -15,5 +15,6 @@ namespace EWorksPromotionCampaign.Shared.Util
         public static readonly string Forbidden = "10403";
         public static readonly string NotFound = "10404";
         public static readonly string Unauthorized = "10401";
+        public static readonly string ProcessingError = "42000";
     }
 }

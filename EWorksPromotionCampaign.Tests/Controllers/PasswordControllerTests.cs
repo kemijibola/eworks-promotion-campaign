@@ -1,4 +1,5 @@
 ﻿using EWorksPromotionCampaign.Service;
+using EWorksPromotionCampaign.Shared.Models.Input;
 using EWorksPromotionCampaign.Shared.Models.Input.Account;
 using System;
 using System.Collections.Generic;

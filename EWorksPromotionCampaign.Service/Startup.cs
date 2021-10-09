@@ -170,6 +170,7 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<ICampaignRewardRepository, CampaignRewardRepository>();
             services.AddSingleton<IRaffleRepository, RaffleRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IPaymentRepository, PaymentRepository>();
             #endregion
 
             #region Services
@@ -181,6 +182,8 @@ namespace EWorksPromotionCampaign.Service
             services.AddSingleton<IConfigurationService, ConfigurationService>();
             services.AddSingleton<ICampaignRewardService, CampaignRewardService>();
             services.AddSingleton<ICampaignService, CampaignService>();
+            services.AddSingleton<IPaymentService, PaymentService>();
+            services.AddSingleton<IOrderService, OrderService>();
             #endregion
 
             #region Validators
@@ -200,6 +203,10 @@ namespace EWorksPromotionCampaign.Service
             services.AddHostedService<ValidateOptionsService>();
             services.Configure<ExternalServicesConfig>(ExternalServicesConfig.QuickTellerServiceApi, Configuration.GetSection("ExternalServices:QuickTellerServiceApi"));
             services.Configure<ExternalServicesConfig>(ExternalServicesConfig.PaystackServiceApi, Configuration.GetSection("ExternalServices:PaystackServiceApi"));
+            #endregion
+
+            #region HttpClients
+            services.AddHttpClient<IPaystackClientApi, PaystackClientApi>();
             #endregion
         }
         public void RunMigrations()

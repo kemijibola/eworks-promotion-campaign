@@ -1,11 +1,61 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <None Remove="Migrations\1622052145_initial.sql" />
+    <None Remove="Migrations\1622283604_user.sql" />
+    <None Remove="Migrations\1623011135_admin_module.sql" />
+    <None Remove="Migrations\1623011560_admin_module_migration.sql" />
+    <None Remove="Migrations\1623524516_permission.sql" />
+    <None Remove="Migrations\1623583300_add_columns_to_user.sql" />
+    <None Remove="Migrations\1623707513_update_role.sql" />
+    <None Remove="Migrations\1623956745_configuration.sql" />
+    <None Remove="Migrations\1625977885_permission_migration.sql" />
+    <None Remove="Migrations\1625978546_campaign.sql" />
+    <None Remove="Migrations\1625983022_campaign_reward.sql" />
+    <None Remove="Migrations\1627123695_campaign_codes.sql" />
+    <None Remove="Migrations\1629047969_subscription.sql" />
+    <None Remove="Migrations\1629048717_raffle_draw.sql" />
+    <None Remove="Migrations\1630216594_delete_role.sql" />
+    <None Remove="Migrations\1630217255_process_instant_winning.sql" />
+    <None Remove="Migrations\1630217899_get_admin_users.sql" />
+    <None Remove="Migrations\1630425897_order.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\1622052145_initial.sql" />
+    <EmbeddedResource Include="Migrations\1622283604_user.sql" />
+    <EmbeddedResource Include="Migrations\1623011135_admin_module.sql" />
+    <EmbeddedResource Include="Migrations\1623011560_admin_module_migration.sql" />
+    <EmbeddedResource Include="Migrations\1623524516_permission.sql" />
+    <EmbeddedResource Include="Migrations\1623583300_add_columns_to_user.sql" />
+    <EmbeddedResource Include="Migrations\1623707513_update_role.sql" />
+    <EmbeddedResource Include="Migrations\1623956745_configuration.sql" />
+    <EmbeddedResource Include="Migrations\1625978546_campaign.sql" />
+    <EmbeddedResource Include="Migrations\1625977885_permission_migration.sql" />
+    <EmbeddedResource Include="Migrations\1625983022_campaign_reward.sql" />
+    <EmbeddedResource Include="Migrations\1627123695_campaign_codes.sql" />
+    <EmbeddedResource Include="Migrations\1629047969_subscription.sql" />
+    <EmbeddedResource Include="Migrations\1629048717_raffle_draw.sql" />
+    <EmbeddedResource Include="Migrations\1630216594_delete_role.sql" />
+    <EmbeddedResource Include="Migrations\1630217899_get_admin_users.sql" />
+    <EmbeddedResource Include="Migrations\1630217255_process_instant_winning.sql" />
+    <EmbeddedResource Include="Migrations\1630425897_order.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EWorksPromotionCampaign.Repository\EWorksPromotionCampaign.Repository.csproj" />
+    <ProjectReference Include="..\EWorksPromotionCampaign.Shared\EWorksPromotionCampaign.Shared.csproj" />
   </ItemGroup>
 
 </Project>
